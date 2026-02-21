@@ -1,0 +1,693 @@
+:root {
+    --bg: #f5f6f8;
+    --card: #fff;
+    --text: #0b0b0b;
+    --muted: #6b6b6b;
+    --accent: #f07a1a;
+    --green: #02f758;
+    --radius: 20px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0;
+}
+
+.logo {
+    width: 28px;
+    height: 28px;
+    /* object-fit ensures the star doesn't stretch */
+    object-fit: contain;
+}
+
+.email {
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+}
+
+h1 {
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0;
+    font-weight: 800;
+}
+
+.sub {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 8px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.badge .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+}
+
+.two-col {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.left {
+    flex: 1;
+    min-width: 260px;
+}
+
+.cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #111;
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+
+.cta:hover {
+    opacity: .95;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-left: 8px;
+}
+
+/* ================= GRID ================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 26px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .04);
+    min-height: 120px;
+}
+
+.card.timeline {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ================= TIMELINE HEADER ================= */
+
+.timeline-header {
+    position: relative;
+    z-index: 5;
+    margin-bottom: -35px;
+}
+
+.timeline-title-ellipse {
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    border: 1px solid #eee;
+    display: inline-block;
+}
+
+/* ================= TIMELINE CONTENT ================= */
+
+.timeline-content {
+    position: relative;
+    padding: 40px 10px 10px 40px;
+    /* more space for line + dots */
+    max-height: 260px;
+    overflow-y: auto;
+
+    mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 0.2) 30px,
+            rgba(0, 0, 0, 1) 80px,
+            rgba(0, 0, 0, 1) 100%);
+    -webkit-mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 0.2) 30px,
+            rgba(0, 0, 0, 1) 80px,
+            rgba(0, 0, 0, 1) 100%);
+
+    scrollbar-width: none;
+}
+
+.timeline-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===== Vertical Timeline Line ===== */
+/* Inner wrapper grows to full scroll height */
+.timeline-inner {
+    position: relative;
+}
+
+/* Vertical line now equals full scroll height */
+.timeline-inner::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    /* adjust to center under markers */
+    top: 0;
+    bottom: 0;
+    /* now equals FULL scrollable height */
+    width: 2px;
+    background: #111;
+    opacity: 0.15;
+    z-index: 1;
+}
+
+
+/* ================= TIMELINE ITEMS ================= */
+
+.timeline-item {
+    position: relative;
+    padding: 14px 0;
+}
+
+/* ===== FULL BLACK MARKERS ON TOP OF LINE ===== */
+
+.timeline-marker {
+    position: absolute;
+    left: -24px;
+    /* aligns center to vertical line */
+    top: 24px;
+    /* vertically aligned to title */
+    width: 10px;
+    height: 10px;
+    background: #000;
+    /* full black */
+    border-radius: 50%;
+    z-index: 3;
+    /* ABOVE the vertical line */
+}
+
+/* Text block */
+.timeline-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Smaller title */
+.item-title {
+    font-weight: 600;
+    font-size: 14px;
+    /* was 16px */
+    color: #222;
+}
+
+/* Smaller subtitle */
+.item-subtitle {
+    font-size: 12px;
+    /* was 13px */
+    color: #6b6b6b;
+    margin-top: 3px;
+}
+
+/* Merged About Me Block */
+.card.about-me {
+    grid-column: span 2;
+    /* Takes up the space of the two original blocks */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Content styling to match the spacing of the timeline info */
+.about-content {
+    padding-top: 50px;
+    /* Space for the floating header */
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.about-content p {
+    margin-bottom: 12px;
+}
+
+/* Layout for the Publications Block */
+.card.publications {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+}
+
+.pub-display-area {
+    margin-top: 50px;
+    flex-grow: 1;
+}
+
+.pub-content {
+    display: none;
+    /* Hide all by default */
+}
+
+.pub-content.active {
+    display: block;
+    /* Show active one */
+    animation: fadeIn 0.3s ease;
+}
+
+.pub-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+}
+
+.pub-authors {
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.pub-description {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* Tabs Styling from image */
+.pub-tabs-container {
+    background: #fcfcfc;
+    border: 1px solid #eee;
+    border-radius: 999px;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.pub-tab {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #444;
+}
+
+.pub-tab.active {
+    background: #000;
+    color: #fff;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gadget-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 180px;
+}
+
+.gadget-slide {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.4s ease;
+}
+
+.gadget-slide.active {
+    display: block;
+}
+
+/* Blurry Navigation Buttons */
+.gadget-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gadget-nav:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.nav-left {
+    left: 10px;
+}
+
+.nav-right {
+    right: 10px;
+}
+
+/* Update the container to allow edge-to-edge images */
+.card.gadget-container {
+    position: relative;
+    padding: 0;
+    /* Remove padding so image touches the corners */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 180px;
+    background: #fff;
+}
+
+.time-row {
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 2px 0;
+    color: var(--accent);
+    /* Uses your orange accent color */
+}
+
+.map-figure-bg {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* This ensures the image fills the space without stretching */
+}
+
+/* Ensure the Map header stays on top of the image */
+.gadget-container .timeline-header {
+    pointer-events: none;
+    /* Allows clicking through the header area to the buttons */
+}
+
+/* Updated overlay to move it slightly lower so it doesn't clash with the header */
+.map-overlay {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 12px 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    /* Pushes the city info down slightly */
+}
+
+/* Ensure the container maintains its shape */
+.gadget-slide {
+    grid-area: 1 / 1 / 2 / 2;
+    /* All slides occupy the exact same space */
+    width: 100%;
+    height: 100%;
+
+    /* Keep preloaded but hidden */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.gadget-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Ensure images fill the stack without reloading */
+.map-figure-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Custom Cursor Styles */
+.cursor-dot,
+.cursor-outline {
+    pointer-events: none;
+    /* Crucial: clicks go THROUGH the dots to your buttons */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    transition: opacity 0.3s ease-in-out, transform 0.1s ease-out;
+}
+
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text);
+    /* No transition here for instant movement */
+}
+
+.cursor-outline {
+    width: 10px;
+    /* Slightly larger than the main dot */
+    height: 10px;
+    background-color: var(--text);
+    opacity: 0.5;
+    /* This creates the "shadow" look */
+    filter: blur(1px);
+    /* Softens the edges like a shadow */
+    /* Remove the border from before */
+    border: none;
+}
+
+
+/* Hide the real mouse cursor on the whole page */
+html,
+body {
+    cursor: none;
+}
+
+/* Ensure buttons still show a pointer if desired, or keep it hidden */
+a,
+button,
+.cta,
+.pub-tab,
+.gadget-nav {
+    cursor: none;
+}
+
+/* Ensure the weather slide still looks good without the map background */
+#slide-weather {
+    padding: 20px;
+}
+
+.resume-slide-btn {
+    display: inline-flex;
+    width: fit-content;
+    flex: 0 0 auto;
+    align-self: flex-start;
+
+    padding: 14px 22px;
+    /* keep your size */
+    background-color: #000;
+    border-radius: 100px;
+    transition: all .35s ease-out;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+/* Mask */
+.resume-slide-btn .mask {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Sliding repeating text */
+.resume-slide-btn .slider {
+    display: flex;
+    position: relative;
+    animation: slideText 3s linear infinite;
+    transition: top .75s ease-out;
+    top: 0;
+}
+
+.resume-slide-btn .slider p:nth-of-type(2) {
+    position: absolute;
+    left: calc(100% + 15px);
+}
+
+.resume-slide-btn p {
+    margin: 0;
+    white-space: nowrap;
+    color: #fff;
+}
+
+/* Animated hover text */
+
+.resume-slide-btn .animated-text {
+    position: absolute;
+    inset: 0;
+    /* fill entire button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resume-slide-btn .animated-text span {
+    position: relative;
+    top: 18px;
+    color: #000;
+    transition: top .25s ease-out;
+}
+
+/* Hover */
+.resume-slide-btn:hover {
+    background-color: #c9ff18;
+}
+
+.resume-slide-btn:hover .slider {
+    top: -18px;
+}
+
+.resume-slide-btn:hover .animated-text span {
+    top: 0;
+}
+
+.resume-slide-btn .animated-text span:nth-child(5) {
+    width: 0.35em;
+    /* controls the space size */
+}
+
+/* Sliding animation */
+@keyframes slideText {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Responsive adjustment: stack on smaller screens */
+@media (max-width: 980px) {
+    .card.about-me {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .card.about-me {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 980px) {
+    h1 {
+        font-size: 34px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
