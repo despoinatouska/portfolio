@@ -655,39 +655,92 @@ button,
 }
 
 /* Responsive adjustment: stack on smaller screens */
-@media (max-width: 980px) {
-    .card.about-me {
-        grid-column: span 2;
-    }
-}
 
-@media (max-width: 640px) {
-    .card.about-me {
-        grid-column: span 1;
-    }
-}
+/* ================= RESPONSIVE DESIGN ================= */
 
+/* 1. Tablet & Small Screens (Up to 980px) */
 @media (max-width: 980px) {
+    .container {
+        padding: 16px;
+    }
+
     h1 {
         font-size: 34px;
     }
 
     .grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for tablet */
+    }
+
+    /* Ensure spanned blocks don't break the 2-col layout */
+    .card.about-me,
+    .card.publications {
+        grid-column: span 2;
     }
 }
 
+/* 2. Mobile Smartphones (Up to 640px) */
 @media (max-width: 640px) {
+
+    /* Hide custom cursor on mobile (it interferes with touch and usually isn't visible) */
+    .cursor-dot,
+    .cursor-outline {
+        display: none !important;
+    }
+
+    html,
+    body,
+    a,
+    button,
+    .cta,
+    .pub-tab,
+    .gadget-nav {
+        cursor: auto;
+        /* Restore default cursor for touch */
+    }
+
     header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        /* Keep logo and email on one line or switch to column */
+        justify-content: flex-start;
+        padding: 12px 0;
     }
 
     h1 {
         font-size: 28px;
+        letter-spacing: -0.5px;
     }
 
+    .sub {
+        font-size: 18px;
+    }
+
+    /* Force single column grid */
     .grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Reset spans for single column */
+    .card.about-me,
+    .card.publications {
+        grid-column: span 1;
+    }
+
+    /* Adjust the "View Resume" button container for mobile */
+    .two-col {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .subtitle {
+        margin-left: 0;
+    }
+
+    /* Adjust Map gadget height for smaller screens */
+    .card.gadget-container {
+        min-height: 220px;
     }
 }
