@@ -6,6 +6,9 @@
     --accent: #f07a1a;
     --green: #02f758;
     --radius: 20px;
+
+    --feature-card-height: 340px;
+    /* same height for Publications + Gadget */
 }
 
 * {
@@ -16,9 +19,14 @@ html,
 body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
+    width: 100%;
     background: var(--bg);
     color: var(--text);
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    cursor: none;
 }
 
 a {
@@ -27,7 +35,7 @@ a {
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 24px;
 }
@@ -44,7 +52,6 @@ header {
 .logo {
     width: 28px;
     height: 28px;
-    /* object-fit ensures the star doesn't stretch */
     object-fit: contain;
 }
 
@@ -109,11 +116,11 @@ h1 {
     border-radius: 999px;
     font-weight: 700;
     border: none;
-    cursor: pointer;
+    cursor: none;
 }
 
 .cta:hover {
-    opacity: .95;
+    opacity: 0.95;
 }
 
 .subtitle {
@@ -129,24 +136,28 @@ h1 {
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
     margin-top: 26px;
+    align-items: stretch;
+    /* same height in 3-column layout */
 }
 
 .card {
     background: var(--card);
     border-radius: var(--radius);
     padding: 20px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, .04);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
     min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    /* equal height in multi-column layout */
 }
+
+/* ================= TIMELINE CARD ================= */
 
 .card.timeline {
     position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    /* Stack header and content vertically */
-    height: 100%;
-    /* Ensure card takes full grid cell height */
+    min-height: 280px;
 }
 
 /* ================= TIMELINE HEADER ================= */
@@ -155,6 +166,7 @@ h1 {
     position: relative;
     z-index: 5;
     margin-bottom: -35px;
+    flex: 0 0 auto;
 }
 
 .timeline-title-ellipse {
@@ -163,7 +175,7 @@ h1 {
     background: #fff;
     font-weight: 700;
     font-size: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border: 1px solid #eee;
     display: inline-block;
 }
@@ -173,62 +185,48 @@ h1 {
 .timeline-content {
     position: relative;
     padding: 40px 10px 10px 40px;
-    /* more space for line + dots */
-    flex: 1;
-    /* This tells the content to grow and fill the remaining card space */
+    flex: 1 1 auto;
     overflow-y: auto;
-
-    /* Keep your mask-image styles here... */
-    scrollbar-width: none;
-
-    mask-image: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0) 0px,
-            rgba(0, 0, 0, 1) 60px,
-            /* Starts solid earlier */
-            rgba(0, 0, 0, 1) calc(100% - 40px),
-            /* Stays solid until near the end */
-            rgba(0, 0, 0, 0) 100%);
-    /* Fades out slightly at the very bottom */
-
-    /* mask-image: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0) 0px,
-            rgba(0, 0, 0, 0.2) 30px,
-            rgba(0, 0, 0, 1) 80px,
-            rgba(0, 0, 0, 1) 100%); */
+    scrollbar-width: thin;
+    scrollbar-color: #ddd transparent;
     -webkit-mask-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 0) 0px,
             rgba(0, 0, 0, 0.2) 30px,
             rgba(0, 0, 0, 1) 80px,
             rgba(0, 0, 0, 1) 100%);
-
-    scrollbar-width: none;
+    mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 1) 60px,
+            rgba(0, 0, 0, 1) calc(100% - 40px),
+            rgba(0, 0, 0, 0) 100%);
 }
 
 .timeline-content::-webkit-scrollbar {
-    display: none;
+    width: 6px;
+}
+
+.timeline-content::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 999px;
 }
 
 /* ===== Vertical Timeline Line ===== */
-/* Inner wrapper grows to full scroll height */
+
 .timeline-inner {
     position: relative;
 }
 
-/* Vertical line now equals full scroll height */
 .timeline-inner::before {
     content: "";
     position: absolute;
     left: -20px;
-    /* adjust to center under markers */
     top: 0;
     bottom: 0;
-    /* now equals FULL scrollable height */
     width: 2px;
     background: #111;
     opacity: 0.15;
     z-index: 1;
 }
-
 
 /* ================= TIMELINE ITEMS ================= */
 
@@ -237,95 +235,96 @@ h1 {
     padding: 14px 0;
 }
 
-/* ===== FULL BLACK MARKERS ON TOP OF LINE ===== */
-
 .timeline-marker {
     position: absolute;
     left: -24px;
-    /* aligns center to vertical line */
     top: 24px;
-    /* vertically aligned to title */
     width: 10px;
     height: 10px;
     background: #000;
-    /* full black */
     border-radius: 50%;
     z-index: 3;
-    /* ABOVE the vertical line */
 }
 
-/* Text block */
 .timeline-info {
     display: flex;
     flex-direction: column;
 }
 
-/* Smaller title */
 .item-title {
     font-weight: 600;
     font-size: 16px;
-    /* was 16px */
     color: #222;
 }
 
-/* Smaller subtitle */
 .item-subtitle {
     font-size: 14px;
-    /* was 13px */
     color: #6b6b6b;
     margin-top: 3px;
 }
 
-/* Merged About Me Block */
+/* ================= ABOUT ME ================= */
+
 .card.about-me {
     grid-column: span 2;
-    /* Takes up the space of the two original blocks */
-    display: flex;
-    flex-direction: column;
+    min-height: 280px;
 }
 
-/* Content styling to match the spacing of the timeline info */
 .about-content {
     padding-top: 50px;
-    /* Space for the floating header */
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.6;
     color: #444;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
+    flex: 1 1 auto;
 }
 
 .about-content p {
-    margin-bottom: 12px;
+    margin: 0 0 16px 0;
+    text-align: left;
+    white-space: normal;
 }
 
-/* Layout for the Publications Block */
+/* ================= PUBLICATIONS ================= */
+
 .card.publications {
     grid-column: span 2;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 280px;
+    height: var(--feature-card-height);
+    min-height: var(--feature-card-height);
 }
 
 .pub-display-area {
+    position: relative;
     margin-top: 50px;
-    flex-grow: 1;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .pub-content {
-    display: none;
-    /* Hide all by default */
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    padding-right: 6px;
 }
 
 .pub-content.active {
-    display: block;
-    /* Show active one */
-    animation: fadeIn 0.3s ease;
+    opacity: 1;
+    visibility: visible;
 }
 
 .pub-title {
     font-size: 24px;
     font-weight: 800;
     margin: 0 0 8px 0;
+    line-height: 1.25;
 }
 
 .pub-authors {
@@ -341,7 +340,6 @@ h1 {
     line-height: 1.5;
 }
 
-/* Tabs Styling from image */
 .pub-tabs-container {
     background: #fcfcfc;
     border: 1px solid #eee;
@@ -349,7 +347,9 @@ h1 {
     padding: 6px;
     display: flex;
     justify-content: space-between;
+    gap: 8px;
     margin-top: 20px;
+    flex-wrap: nowrap;
 }
 
 .pub-tab {
@@ -359,7 +359,7 @@ h1 {
     border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
+    cursor: none;
     transition: all 0.2s;
     color: #444;
 }
@@ -369,38 +369,111 @@ h1 {
     color: #fff;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
+.pub-link-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #111;
+    border: 1px solid #111;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: none;
+}
+
+.pub-link-btn:hover {
+    background: #111;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pub-dots-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 8px 0 0;
+}
+
+.pub-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: #d3d3d3;
+    padding: 0;
+    cursor: none;
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.pub-dot:hover {
+    transform: scale(1.25);
+    background: #999;
+}
+
+.pub-dot.active {
+    background: #000;
+    transform: scale(1.2);
+
+    animation: dotPulse 0.4s ease 0.2s forwards;
+}
+
+@keyframes dotPulse {
+    0% {
+        transform: scale(1);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    50% {
+        transform: scale(1.35);
+    }
+
+    100% {
+        transform: scale(1.2);
     }
 }
 
-.gadget-container {
+/* ================= GADGET / MAP ================= */
+
+.gadget-container,
+.card.gadget-container {
     position: relative;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    min-height: 180px;
+    height: var(--feature-card-height);
+    min-height: var(--feature-card-height);
+    background: #fff;
 }
 
 .gadget-slide {
-    display: none;
     width: 100%;
-    animation: fadeIn 0.4s ease;
+    height: 100%;
+    display: none;
+    grid-area: 1 / 1 / 2 / 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-in-out;
 }
 
 .gadget-slide.active {
     display: block;
+    opacity: 1;
+    visibility: visible;
+    animation: fadeIn 0.4s ease;
 }
 
-/* Blurry Navigation Buttons */
 .gadget-nav {
     position: absolute;
     top: 50%;
@@ -412,7 +485,7 @@ h1 {
     border-radius: 50%;
     width: 32px;
     height: 32px;
-    cursor: pointer;
+    cursor: none;
     z-index: 10;
     transition: background 0.3s;
     display: flex;
@@ -432,31 +505,9 @@ h1 {
     right: 10px;
 }
 
-/* Update the container to allow edge-to-edge images */
-.card.gadget-container {
-    position: relative;
-    padding: 0;
-    /* Remove padding so image touches the corners */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    min-height: 180px;
-    background: #fff;
-}
-
-.time-row {
-    font-family: monospace;
-    font-size: 14px;
-    font-weight: 700;
-    margin: 2px 0;
-    color: var(--accent);
-    /* Uses your orange accent color */
-}
-
 .map-figure-bg {
     width: 100%;
-    height: 180px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -464,19 +515,16 @@ h1 {
 
 .map-img {
     position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* This ensures the image fills the space without stretching */
 }
 
-/* Ensure the Map header stays on top of the image */
 .gadget-container .timeline-header {
     pointer-events: none;
-    /* Allows clicking through the header area to the buttons */
 }
 
-/* Updated overlay to move it slightly lower so it doesn't clash with the header */
 .map-overlay {
     position: relative;
     z-index: 2;
@@ -489,48 +537,25 @@ h1 {
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-top: 40px;
-    /* Pushes the city info down slightly */
 }
 
-/* Ensure the container maintains its shape */
-.gadget-slide {
-    grid-area: 1 / 1 / 2 / 2;
-    /* All slides occupy the exact same space */
-    width: 100%;
-    height: 100%;
-
-    /* Keep preloaded but hidden */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.6s ease-in-out;
+.time-row {
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 2px 0;
+    color: var(--accent);
 }
 
-.gadget-slide.active {
-    opacity: 1;
-    visibility: visible;
+#slide-weather {
+    padding: 20px;
 }
 
-/* Ensure images fill the stack without reloading */
-.map-figure-bg {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* ================= CUSTOM CURSOR ================= */
 
-.map-img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Custom Cursor Styles */
 .cursor-dot,
 .cursor-outline {
     pointer-events: none;
-    /* Crucial: clicks go THROUGH the dots to your buttons */
     position: fixed;
     top: 0;
     left: 0;
@@ -544,73 +569,55 @@ h1 {
     width: 8px;
     height: 8px;
     background-color: var(--text);
-    /* No transition here for instant movement */
 }
 
 .cursor-outline {
     width: 10px;
-    /* Slightly larger than the main dot */
     height: 10px;
     background-color: var(--text);
     opacity: 0.5;
-    /* This creates the "shadow" look */
     filter: blur(1px);
-    /* Softens the edges like a shadow */
-    /* Remove the border from before */
     border: none;
 }
 
-
-/* Hide the real mouse cursor on the whole page */
-html,
-body {
-    cursor: none;
-}
-
-/* Ensure buttons still show a pointer if desired, or keep it hidden */
 a,
 button,
 .cta,
 .pub-tab,
-.gadget-nav {
+.gadget-nav,
+.pub-link-btn,
+.resume-slide-btn {
     cursor: none;
 }
 
-/* Ensure the weather slide still looks good without the map background */
-#slide-weather {
-    padding: 20px;
-}
+/* ================= RESUME BUTTON ================= */
 
 .resume-slide-btn {
     display: inline-flex;
     width: fit-content;
     flex: 0 0 auto;
     align-self: flex-start;
-
     padding: 14px 22px;
-    /* keep your size */
     background-color: #000;
     border-radius: 100px;
-    transition: all .35s ease-out;
-    cursor: pointer;
+    transition: all 0.35s ease-out;
+    cursor: none;
     position: relative;
     overflow: hidden;
     text-decoration: none;
     font-family: sans-serif;
 }
 
-/* Mask */
 .resume-slide-btn .mask {
     overflow: hidden;
     position: relative;
 }
 
-/* Sliding repeating text */
 .resume-slide-btn .slider {
     display: flex;
     position: relative;
     animation: slideText 3s linear infinite;
-    transition: top .75s ease-out;
+    transition: top 0.75s ease-out;
     top: 0;
 }
 
@@ -625,12 +632,9 @@ button,
     color: #fff;
 }
 
-/* Animated hover text */
-
 .resume-slide-btn .animated-text {
     position: absolute;
     inset: 0;
-    /* fill entire button */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -640,10 +644,9 @@ button,
     position: relative;
     top: 18px;
     color: #000;
-    transition: top .25s ease-out;
+    transition: top 0.25s ease-out;
 }
 
-/* Hover */
 .resume-slide-btn:hover {
     background-color: #c9ff18;
 }
@@ -658,152 +661,110 @@ button,
 
 .resume-slide-btn .animated-text span:nth-child(5) {
     width: 0.35em;
-    /* controls the space size */
 }
 
-/* Sliding animation */
-@keyframes slideText {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-100%);
-    }
+/* ================= VIEW TRANSITIONS ================= */
+@view-transition {
+    navigation: auto;
 }
 
-.pub-link-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #111;
-    border: 1px solid #111;
-    border-radius: 999px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: none;
-    /* Keeps your custom cursor consistent */
+.ortho-title {
+    view-transition-name: ortho-title;
 }
 
-.pub-link-btn:hover {
-    background: #111;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Unique names for elements that exist on both pages */
-/* 1. The Container: This makes the card background expand to fill the new page */
-/* index.html CSS */
-
-/* Match the publication title */
-#pub1 .pub-title {
-    view-transition-name: project-title-morph;
-}
-
-/* Match the authors list */
-#pub1 .pub-authors {
-    view-transition-name: project-authors-move;
-}
-
-/* Match the card background to the clarity header */
-#pub1 {
-    view-transition-name: project-card-expand;
-}
-
-::view-transition-group(project-title-morph),
-::view-transition-group(project-authors-move) {
-    animation-duration: 0.5s;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Smooth cross-fade for the rest of the page content */
+/* Keep the whole page transition subtle */
 ::view-transition-old(root) {
-    animation: 200ms ease-out both fade-out;
+    animation: root-out 180ms ease-out both;
 }
 
 ::view-transition-new(root) {
-    animation: 400ms ease-in both fade-in;
+    animation: root-in 220ms ease-out both;
 }
 
-@keyframes fade-out {
+/* Make the title the main actor */
+::view-transition-group(ortho-title) {
+    animation-duration: 500ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 20;
+}
+
+::view-transition-old(ortho-title) {
+    animation: ortho-title-out 240ms ease-out both;
+}
+
+::view-transition-new(ortho-title) {
+    animation: ortho-title-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Everything else on the destination page fades in later */
+.page-content {
+    opacity: 0;
+    animation: page-content-in 420ms ease-out 260ms forwards;
+}
+
+@keyframes root-out {
+    from {
+        opacity: 1;
+    }
+
     to {
-        opacity: 0;
+        opacity: 0.97;
     }
 }
 
-@keyframes fade-in {
+@keyframes root-in {
+    from {
+        opacity: 0.95;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes ortho-title-out {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        opacity: 0.85;
+        transform: translateY(-4px) scale(0.985);
+    }
+}
+
+@keyframes ortho-title-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(1.02);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-1px) scale(1.003);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes page-content-in {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-html,
-body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    /* This removes the right-side scrollbar */
-}
+/* ================= RESPONSIVE ================= */
 
-.container {
-    height: 100vh;
-    max-width: 1200px;
-    /* Increased slightly for better grid fit */
-    margin: 0 auto;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    /* Stacks header, intro, and grid vertically */
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    /* Forces two equal rows */
-    gap: 18px;
-    margin-top: 20px;
-    flex: 1;
-    /* This pushes the grid to fill the remaining height */
-    min-height: 0;
-    /* Critical for grid scrolling to work */
-}
-
-.card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    overflow: hidden;
-    /* Keeps content inside the card */
-    display: flex;
-    flex-direction: column;
-}
-
-.timeline-content {
-    flex: 1;
-    /* Takes up all space inside the card */
-    overflow-y: auto;
-    /* Allows scrolling ONLY inside this card */
-    padding-right: 10px;
-    /* Custom scrollbar to keep it minimalist */
-    scrollbar-width: thin;
-    scrollbar-color: #ddd transparent;
-}
-
-
-/* Responsive adjustment: stack on smaller screens */
-
-/* ================= RESPONSIVE DESIGN ================= */
-
-/* 1. Tablet & Small Screens (Up to 980px) */
 @media (max-width: 980px) {
     .container {
         padding: 16px;
@@ -813,79 +774,185 @@ body {
         font-size: 34px;
     }
 
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 columns for tablet */
+    .sub {
+        font-size: 20px;
     }
 
-    /* Ensure spanned blocks don't break the 2-col layout */
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .card {
+        height: 100%;
+    }
+
     .card.about-me,
     .card.publications {
         grid-column: span 2;
+        min-height: 280px;
     }
 }
 
-/* 2. Mobile Smartphones (Up to 640px) */
 @media (max-width: 640px) {
 
-    /* Hide custom cursor on mobile (it interferes with touch and usually isn't visible) */
-    .cursor-dot,
-    .cursor-outline {
-        display: none !important;
+    html,
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
-    html,
-    body,
-    a,
-    button,
-    .cta,
-    .pub-tab,
-    .gadget-nav {
-        cursor: auto;
-        /* Restore default cursor for touch */
+    .container {
+        padding: 14px;
     }
 
     header {
-        flex-direction: row;
-        /* Keep logo and email on one line or switch to column */
-        justify-content: flex-start;
-        padding: 12px 0;
+        padding: 14px 0;
     }
 
     h1 {
         font-size: 28px;
-        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
     .sub {
         font-size: 18px;
     }
 
-    /* Force single column grid */
+    .email,
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .two-col {
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .left {
+        min-width: 0;
+        width: 100%;
+    }
+
     .grid {
         grid-template-columns: 1fr;
         gap: 16px;
+        align-items: start;
+        /* allow different heights in 1-column layout */
     }
 
-    /* Reset spans for single column */
+    .card,
     .card.about-me,
-    .card.publications {
-        grid-column: span 1;
-    }
-
-    /* Adjust the "View Resume" button container for mobile */
-    .two-col {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-
-    .subtitle {
-        margin-left: 0;
-    }
-
-    /* Adjust Map gadget height for smaller screens */
+    .card.publications,
+    .card.timeline,
     .card.gadget-container {
-        min-height: 220px;
+        grid-column: span 1 !important;
+        width: 100%;
+        min-width: 0;
+        height: auto !important;
+        /* different heights */
+        min-height: 0;
+        align-self: start;
+    }
+
+    .card.timeline {
+        min-height: 240px;
+    }
+
+    .about-content {
+        padding-top: 55px;
+        font-size: 15px;
+        line-height: 1.6;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .about-content p {
+        margin-bottom: 12px;
+        white-space: normal;
+    }
+
+    .pub-display-area {
+        margin-top: 55px;
+    }
+
+    .pub-title {
+        font-size: 19px;
+        line-height: 1.3;
+    }
+
+    .pub-authors {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .pub-description {
+        font-size: 15px;
+    }
+
+    .pub-tabs-container {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        border-radius: 18px;
+    }
+
+    .pub-tab {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .timeline-content {
+        padding: 40px 8px 8px 34px;
+    }
+
+    .timeline-inner::before {
+        left: -18px;
+    }
+
+    .timeline-marker {
+        left: -22px;
+    }
+
+    .map-overlay {
+        padding: 10px 16px;
+        margin-top: 32px;
+    }
+
+    .resume-slide-btn {
+        padding: 12px 18px;
+    }
+
+    .card.publications {
+        height: auto !important;
+        min-height: auto !important;
+    }
+
+    .pub-display-area {
+        position: relative;
+        margin-top: 55px;
+        flex: none;
+        min-height: auto;
+        overflow: visible;
+    }
+
+    .pub-content {
+        position: relative;
+        inset: auto;
+        opacity: 0;
+        visibility: hidden;
+        height: auto;
+        padding-right: 0;
+        transition: opacity 0.25s ease;
+        display: none;
+    }
+
+    .pub-content.active {
+        display: block;
+        opacity: 1;
+        visibility: visible;
     }
 }

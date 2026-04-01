@@ -182,3 +182,121 @@
 }
 
 /*# sourceMappingURL=clarity.css.map */
+@view-transition {
+  navigation: auto;
+}
+
+.ortho-title {
+  view-transition-name: ortho-title;
+}
+
+/* Keep the whole page transition subtle */
+::view-transition-old(root) {
+  animation: root-out 180ms ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: root-in 220ms ease-out both;
+}
+
+/* Make the title the main actor */
+::view-transition-group(ortho-title) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 20;
+}
+
+::view-transition-old(ortho-title) {
+  animation: ortho-title-out 240ms ease-out both;
+}
+
+::view-transition-new(ortho-title) {
+  animation: ortho-title-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Everything else on the destination page fades in later */
+.page-content {
+  opacity: 0;
+  animation: page-content-in 420ms ease-out 260ms forwards;
+}
+
+@keyframes root-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.97;
+  }
+}
+
+@keyframes root-in {
+  from {
+    opacity: 0.95;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ortho-title-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0.85;
+    transform: translateY(-4px) scale(0.985);
+  }
+}
+
+@keyframes ortho-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(1.02);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.003);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes page-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.author-link {
+  color: inherit;
+  text-decoration: underline;
+
+  /* IMPORTANT: reset all typography */
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+
+  /* optional: nicer underline */
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.author-link:hover {
+  opacity: 0.7;
+}

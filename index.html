@@ -202,12 +202,13 @@
 
                 <div class="pub-display-area">
                     <div class="pub-content active" id="pub1">
-                        <h3 class="pub-title">OrthoRF : Exploring Orthogonality in Object-Centric Representations</h3>
+                        <h3 class="pub-title ortho-title">OrthoRF : Exploring Orthogonality in Object-Centric
+                            Representations</h3>
                         <p class="pub-authors">Touska, D., Auer, B., Onose, A., Kasarla, T., Pérez Rey, L., Lipp, M.,
                             Amitonova, L., Oswald, M., Cerfontaine, P.</p>
                         <p class="pub-description" style="margin: 0;">ICLR 2026</p>
                         <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
-                            
+
                             <a href="orthorf.html" class="pub-link-btn">Project Page ↗</a>
                         </div>
                     </div>
@@ -241,12 +242,12 @@
                     </div>
                 </div>
 
-                <div class="pub-tabs-container">
-                    <button class="pub-tab active" onclick="showPub(1)">Pub. 01</button>
-                    <button class="pub-tab" onclick="showPub(2)">Pub. 02</button>
-                    <button class="pub-tab" onclick="showPub(3)">Pub. 03</button>
-                    <button class="pub-tab" onclick="showPub(4)">Pub. 04</button>
-                    <button class="pub-tab" onclick="showPub(5)">Pub. 05</button>
+                <div class="pub-dots-container" aria-label="Publication navigation">
+                    <button class="pub-dot active" onclick="showPub(1, event)" aria-label="Show publication 1"></button>
+                    <button class="pub-dot" onclick="showPub(2, event)" aria-label="Show publication 2"></button>
+                    <button class="pub-dot" onclick="showPub(3, event)" aria-label="Show publication 3"></button>
+                    <button class="pub-dot" onclick="showPub(4, event)" aria-label="Show publication 4"></button>
+                    <button class="pub-dot" onclick="showPub(5, event)" aria-label="Show publication 5"></button>
                 </div>
             </section>
 
@@ -293,25 +294,23 @@
 
 
     <script>
-        // Place the logic here
-        function showPub(index) {
-            // Hide all content blocks
+        function showPub(index, e) {
             document.querySelectorAll('.pub-content').forEach(content => {
                 content.classList.remove('active');
             });
-            // Remove active class from all buttons
-            document.querySelectorAll('.pub-tab').forEach(tab => {
-                tab.classList.remove('active');
+
+            document.querySelectorAll('.pub-dot').forEach(dot => {
+                dot.classList.remove('active');
             });
 
-            // Show selected content and highlight button
             const selectedPub = document.getElementById('pub' + index);
             if (selectedPub) {
                 selectedPub.classList.add('active');
             }
 
-            // Highlight the clicked button
-            event.currentTarget.classList.add('active');
+            if (e && e.currentTarget) {
+                e.currentTarget.classList.add('active');
+            }
         }
 
         // --- 1. Weather Logic (Open-Meteo) ---
@@ -345,7 +344,7 @@
         }
 
         // --- 3. Slider Logic ---
-        let autoSlide = setInterval(toggleGadget, 5000); // Slide every 5 seconds
+        let autoSlide = setInterval(toggleGadget, 5000);
 
         function toggleGadget() {
             document.getElementById('slide-1').classList.toggle('active');
@@ -353,25 +352,25 @@
         }
 
         function manualToggle() {
-            clearInterval(autoSlide); // Stop auto-sliding if user clicks manually
+            clearInterval(autoSlide);
             toggleGadget();
-            autoSlide = setInterval(toggleGadget, 5000); // Restart timer
+            autoSlide = setInterval(toggleGadget, 5000);
         }
 
-        // Initialize
         updateAllWeather();
         setInterval(updateClocks, 1000);
         updateClocks();
 
         document.addEventListener("mouseenter", () => {
             cursorDot.style.opacity = "1";
-            cursorOutline.style.opacity = "0.3"; // Matches your shadow opacity
+            cursorOutline.style.opacity = "0.3";
         });
 
         document.addEventListener("mouseleave", () => {
             cursorDot.style.opacity = "0";
             cursorOutline.style.opacity = "0";
         });
+
         const cursorDot = document.getElementById("cursor-dot");
         const cursorOutline = document.getElementById("cursor-outline");
 
@@ -379,49 +378,32 @@
             const posX = e.clientX;
             const posY = e.clientY;
 
-            // Lead dot: perfectly 1:1 with mouse
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
 
-            // Shadow dot: follows with a very tight delay
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
             }, {
                 duration: 20,
                 fill: "forwards",
-                easing: "ease-out" // Makes the stop feel more natural
+                easing: "ease-out"
             });
         });
 
-        document.querySelector('.pub-link-btn').addEventListener('click', function(e) {
-            // 1. Prevent the immediate jump to the new page
-            e.preventDefault();
-            const targetUrl = this.getAttribute('href');
 
-            // 2. Check if the browser supports the View Transition API
-            if (!document.startViewTransition) {
-                window.location.href = targetUrl;
-                return;
-            }
+        let currentPub = 1;
+        const totalPubs = 5;
 
-            // 3. Start the transition
-            document.startViewTransition(async () => {
-                // You can fetch the new page content here or just navigate
-                // For a simple multi-page site, we navigate after the snapshot
-                window.location.href = targetUrl;
+        setInterval(() => {
+            currentPub = currentPub % totalPubs + 1;
+            showPub(currentPub);
+
+            // update dots
+            document.querySelectorAll('.pub-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentPub - 1);
             });
-        });
-
-        document.querySelector('a[href="clarity.html"]').addEventListener('click', (e) => {
-    if (document.startViewTransition) {
-        e.preventDefault();
-        document.startViewTransition(() => {
-            window.location.href = e.currentTarget.href;
-        });
-    }
-});
-
+        }, 4000);
     </script>
 
 </body>
