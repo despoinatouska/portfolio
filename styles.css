@@ -49,7 +49,7 @@ header {
 }
 
 .email {
-    font-size: 13px;
+    font-size: 16px;
     color: #555;
     font-weight: 500;
 }
@@ -117,7 +117,7 @@ h1 {
 }
 
 .subtitle {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     margin-left: 8px;
 }
@@ -142,6 +142,11 @@ h1 {
 .card.timeline {
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Stack header and content vertically */
+    height: 100%;
+    /* Ensure card takes full grid cell height */
 }
 
 /* ================= TIMELINE HEADER ================= */
@@ -157,7 +162,7 @@ h1 {
     border-radius: 999px;
     background: #fff;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 18px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
     border: 1px solid #eee;
     display: inline-block;
@@ -169,14 +174,27 @@ h1 {
     position: relative;
     padding: 40px 10px 10px 40px;
     /* more space for line + dots */
-    max-height: 260px;
+    flex: 1;
+    /* This tells the content to grow and fill the remaining card space */
     overflow-y: auto;
+
+    /* Keep your mask-image styles here... */
+    scrollbar-width: none;
 
     mask-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 1) 60px,
+            /* Starts solid earlier */
+            rgba(0, 0, 0, 1) calc(100% - 40px),
+            /* Stays solid until near the end */
+            rgba(0, 0, 0, 0) 100%);
+    /* Fades out slightly at the very bottom */
+
+    /* mask-image: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0px,
             rgba(0, 0, 0, 0.2) 30px,
             rgba(0, 0, 0, 1) 80px,
-            rgba(0, 0, 0, 1) 100%);
+            rgba(0, 0, 0, 1) 100%); */
     -webkit-mask-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 0) 0px,
             rgba(0, 0, 0, 0.2) 30px,
@@ -245,14 +263,14 @@ h1 {
 /* Smaller title */
 .item-title {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     /* was 16px */
     color: #222;
 }
 
 /* Smaller subtitle */
 .item-subtitle {
-    font-size: 12px;
+    font-size: 14px;
     /* was 13px */
     color: #6b6b6b;
     margin-top: 3px;
@@ -270,7 +288,7 @@ h1 {
 .about-content {
     padding-top: 50px;
     /* Space for the floating header */
-    font-size: 14px;
+    font-size: 17px;
     line-height: 1.6;
     color: #444;
 }
@@ -312,13 +330,13 @@ h1 {
 
 .pub-authors {
     font-weight: 300;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--text);
     margin-bottom: 12px;
 }
 
 .pub-description {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
     line-height: 1.5;
 }
@@ -653,6 +671,133 @@ button,
         transform: translateX(-100%);
     }
 }
+
+.pub-link-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #111;
+    border: 1px solid #111;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: none;
+    /* Keeps your custom cursor consistent */
+}
+
+.pub-link-btn:hover {
+    background: #111;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Unique names for elements that exist on both pages */
+/* 1. The Container: This makes the card background expand to fill the new page */
+/* index.html CSS */
+
+/* Match the publication title */
+#pub1 .pub-title {
+    view-transition-name: project-title-morph;
+}
+
+/* Match the authors list */
+#pub1 .pub-authors {
+    view-transition-name: project-authors-move;
+}
+
+/* Match the card background to the clarity header */
+#pub1 {
+    view-transition-name: project-card-expand;
+}
+
+::view-transition-group(project-title-morph),
+::view-transition-group(project-authors-move) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth cross-fade for the rest of the page content */
+::view-transition-old(root) {
+    animation: 200ms ease-out both fade-out;
+}
+
+::view-transition-new(root) {
+    animation: 400ms ease-in both fade-in;
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+html,
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* This removes the right-side scrollbar */
+}
+
+.container {
+    height: 100vh;
+    max-width: 1200px;
+    /* Increased slightly for better grid fit */
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    /* Stacks header, intro, and grid vertically */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    /* Forces two equal rows */
+    gap: 18px;
+    margin-top: 20px;
+    flex: 1;
+    /* This pushes the grid to fill the remaining height */
+    min-height: 0;
+    /* Critical for grid scrolling to work */
+}
+
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    overflow: hidden;
+    /* Keeps content inside the card */
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-content {
+    flex: 1;
+    /* Takes up all space inside the card */
+    overflow-y: auto;
+    /* Allows scrolling ONLY inside this card */
+    padding-right: 10px;
+    /* Custom scrollbar to keep it minimalist */
+    scrollbar-width: thin;
+    scrollbar-color: #ddd transparent;
+}
+
 
 /* Responsive adjustment: stack on smaller screens */
 

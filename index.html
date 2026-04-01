@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <meta name="view-transition" content="same-origin" />
 </head>
 
 <body>
@@ -79,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-content" aria-label="Experience list" style="max-height:260px; padding-top: 0;">
+                <div class="timeline-content" aria-label="Experience list" style="max-height:320px; padding-top: 0;">
                     <div class="timeline-inner">
                         <!-- PLACEHOLDER JOB-->
                         <div class="timeline-item">
@@ -204,7 +205,11 @@
                         <h3 class="pub-title">OrthoRF : Exploring Orthogonality in Object-Centric Representations</h3>
                         <p class="pub-authors">Touska, D., Auer, B., Onose, A., Kasarla, T., Pérez Rey, L., Lipp, M.,
                             Amitonova, L., Oswald, M., Cerfontaine, P.</p>
-                        <p class="pub-description">ICLR 2026</p>
+                        <p class="pub-description" style="margin: 0;">ICLR 2026</p>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                            
+                            <a href="orthorf.html" class="pub-link-btn">Project Page ↗</a>
+                        </div>
                     </div>
                     <div class="pub-content" id="pub2">
                         <h3 class="pub-title">Graph-based
@@ -388,6 +393,34 @@
                 easing: "ease-out" // Makes the stop feel more natural
             });
         });
+
+        document.querySelector('.pub-link-btn').addEventListener('click', function(e) {
+            // 1. Prevent the immediate jump to the new page
+            e.preventDefault();
+            const targetUrl = this.getAttribute('href');
+
+            // 2. Check if the browser supports the View Transition API
+            if (!document.startViewTransition) {
+                window.location.href = targetUrl;
+                return;
+            }
+
+            // 3. Start the transition
+            document.startViewTransition(async () => {
+                // You can fetch the new page content here or just navigate
+                // For a simple multi-page site, we navigate after the snapshot
+                window.location.href = targetUrl;
+            });
+        });
+
+        document.querySelector('a[href="clarity.html"]').addEventListener('click', (e) => {
+    if (document.startViewTransition) {
+        e.preventDefault();
+        document.startViewTransition(() => {
+            window.location.href = e.currentTarget.href;
+        });
+    }
+});
 
     </script>
 
