@@ -1,4 +1,5 @@
-import * as THREE from "three";
+// import * as THREE from "three";
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 // import { gsap } from "gsap";
 import gsap from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
 import { vertexShader, fragmentShader } from "./shaders.js";
