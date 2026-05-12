@@ -40,6 +40,43 @@ a {
     padding: 24px;
 }
 
+#loader {
+    height: 100dvh;
+    width: 100%;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+    transition: opacity 0.5s ease-in-out;
+
+    p {
+        position: relative;
+        z-index: 4;
+        color: white;
+        cursor: pointer;
+        font-family: Helvetica, sans-serif;
+    }
+}
+
+canvas {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+}
+
+.hero {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ================= HEADER ================= */
 
 header {
