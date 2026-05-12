@@ -598,21 +598,16 @@ h1 {
 .cursor-dot {
     width: 8px;
     height: 8px;
-    background-color: white;
-    /* Set base to white */
-    mix-blend-mode: difference;
-    /* Magically inverses the color */
+    background-color: var(--text);
 }
 
 .cursor-outline {
     width: 10px;
     height: 10px;
-    background-color: white;
-    /* Set base to white */
+    background-color: var(--text);
     opacity: 0.5;
     filter: blur(1px);
     border: none;
-    mix-blend-mode: difference;
 }
 
 a,

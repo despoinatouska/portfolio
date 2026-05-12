@@ -19,7 +19,7 @@
 
     <div id="loader">
         <canvas id="loader-canvas"></canvas>
-        <p class="click-prompt">CLICK TO REVEAL</p>
+        <p class="click-prompt">HI I'M DESPOINA TOUSKA</p>
     </div>
 
     <div class="container">
@@ -392,6 +392,19 @@
 
         const cursorDot = document.getElementById("cursor-dot");
         const cursorOutline = document.getElementById("cursor-outline");
+        const loader = document.getElementById("loader");
+
+        // When the mouse enters the loader, turn the cursor white
+        loader.addEventListener("mouseenter", () => {
+            cursorDot.style.backgroundColor = "white";
+            cursorOutline.style.backgroundColor = "white";
+        });
+
+        // When the mouse leaves the loader (or when the loader fades out), reset to text color
+        loader.addEventListener("mouseleave", () => {
+            cursorDot.style.backgroundColor = "var(--text)";
+            cursorOutline.style.backgroundColor = "var(--text)";
+        });
 
         window.addEventListener("mousemove", function (e) {
             const posX = e.clientX;
