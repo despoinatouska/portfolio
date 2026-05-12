@@ -83,10 +83,12 @@ canvas {
     align-items: flex-start;
     /* Adjust padding to fit your container */
     margin-bottom: 3rem;
-    font-family: 'Inter', sans-serif;
-    text-transform: uppercase;
-    font-size: 13px;
     /* Keep it small and precise */
+    font-family: 'IBM Plex Mono', monospace;
+    /* The new font! */
+    text-transform: uppercase;
+    font-size: 12px;
+    /* Monospace fonts usually need to be a tiny bit smaller */
     letter-spacing: 0.05em;
 }
 
