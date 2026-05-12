@@ -71,8 +71,57 @@ canvas {
 
 
 /* ================= HEADER ================= */
+.sleek-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    padding: 2rem 0;
+    /* Adjust padding to fit your container */
+    margin-bottom: 3rem;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+    /* Keep it small and precise */
+    letter-spacing: 0.05em;
+}
 
-header {
+.nav-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* Space between top and bottom text */
+}
+
+.nav-primary {
+    color: var(--text, #000000);
+    font-weight: 600;
+}
+
+.nav-secondary {
+    color: #888888;
+    /* The signature gray from the image */
+    font-weight: 400;
+}
+
+/* Specific styling for the link section */
+.nav-secondary.links {
+    display: flex;
+    gap: 12px;
+    /* Space between CV IN @ */
+}
+
+.nav-secondary.links a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nav-secondary.links a:hover {
+    color: var(--text, #000000);
+}
+
+/* header {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -157,7 +206,7 @@ h1 {
     font-size: 16px;
     color: #555;
     margin-left: 8px;
-}
+} */
 
 /* ================= GRID ================= */
 
