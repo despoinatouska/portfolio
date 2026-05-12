@@ -300,3 +300,40 @@
 .author-link:hover {
   opacity: 0.7;
 }
+
+.author-link {
+  color: #007bff;
+  /* A professional academic blue */
+  /* text-decoration: none; */
+  /* Removes underline if desired */
+  transition: color 0.2s ease;
+}
+
+.author-link:hover {
+  color: #0056b3;
+  /* Darker blue on hover */
+  text-decoration: underline;
+}
+
+.author {
+  color: #007bff;
+  /* This makes all text blue */
+}
+
+.author-affiliation {
+  color: #666666 !important;
+  /* Forces the text to pure black */
+  font-size: 13px;
+  /* Makes the letters smaller (standard is 16px) */
+  line-height: 1.5;
+  /* Adjusts spacing between lines */
+  font-weight: 400;
+  /* Ensures it's not too bold */
+  margin-top: 5px;
+}
+
+/* Optional: Make the superscript numbers slightly smaller to match */
+.author-affiliation sup {
+  font-size: 0.75em;
+  color: #666666;
+}
