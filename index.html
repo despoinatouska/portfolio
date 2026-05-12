@@ -48,7 +48,7 @@
             <div class="nav-secondary links">
                 <a href="https://drive.google.com/file/d/1jl10ys5lxetgyxcT68TQp1bNbkXv2mvq/view?usp=sharing"
                     target="_blank" rel="noopener">CV</a>
-                <a href="YOUR_LINKEDIN_URL_HERE" target="_blank" rel="noopener">IN</a>
+                <a href="https://www.linkedin.com/in/despoina-touska-351b72197/" target="_blank" rel="noopener">IN</a>
                 <a href="mailto:d3py.tousk@gmail.com">@</a>
             </div>
         </div>
@@ -346,25 +346,6 @@
 
 
     <script>
-        function showPub(index, e) {
-            document.querySelectorAll('.pub-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            document.querySelectorAll('.pub-dot').forEach(dot => {
-                dot.classList.remove('active');
-            });
-
-            const selectedPub = document.getElementById('pub' + index);
-            if (selectedPub) {
-                selectedPub.classList.add('active');
-            }
-
-            if (e && e.currentTarget) {
-                e.currentTarget.classList.add('active');
-            }
-        }
-
         // --- 1. Weather Logic (Open-Meteo) ---
         async function updateAllWeather() {
             const locations = [
@@ -457,18 +438,64 @@
         });
 
 
+        // let currentPub = 1;
+        // const totalPubs = 5;
+
+        // setInterval(() => {
+        //     currentPub = currentPub % totalPubs + 1;
+        //     showPub(currentPub);
+
+        //     // update dots
+        //     document.querySelectorAll('.pub-dot').forEach((dot, i) => {
+        //         dot.classList.toggle('active', i === currentPub - 1);
+        //     });
+        // }, 4000);
+
         let currentPub = 1;
         const totalPubs = 5;
+        let pubInterval; // We need a variable to store the timer ID
 
-        setInterval(() => {
-            currentPub = currentPub % totalPubs + 1;
-            showPub(currentPub);
+        function showPub(index, e) {
+            // 1. Update the global tracking variable to the clicked index
+            currentPub = index;
 
-            // update dots
-            document.querySelectorAll('.pub-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentPub - 1);
+            // 2. Update Content
+            document.querySelectorAll('.pub-content').forEach(content => {
+                content.classList.remove('active');
             });
-        }, 4000);
+            const selectedPub = document.getElementById('pub' + index);
+            if (selectedPub) {
+                selectedPub.classList.add('active');
+            }
+
+            // 3. Update Dots (Handled cleanly here instead of inside the interval)
+            document.querySelectorAll('.pub-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index - 1);
+            });
+
+            // 4. If the user clicked manually (e exists), reset the automatic timer
+            if (e) {
+                clearInterval(pubInterval);
+                startPubSlider();
+            }
+        }
+
+        // Function to handle the automatic sliding
+        function nextPub() {
+            let nextIndex = currentPub % totalPubs + 1;
+            showPub(nextIndex); // No event passed, so it won't trigger the reset loop
+        }
+
+        // Function to start the interval
+        function startPubSlider() {
+            pubInterval = setInterval(nextPub, 4000);
+        }
+
+        // Start the slider when the script loads
+        // Listen for the click on the loader to start the slider
+        loader.addEventListener("click", () => {
+            startPubSlider();
+        });
     </script>
     <script type="module" src="./src/main.js"></script>
 </body>
