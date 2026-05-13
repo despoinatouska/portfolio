@@ -28,35 +28,34 @@
     </div>
 
     <header class="sleek-nav" aria-label="Main Navigation">
-        <!-- Column 1: Identity -->
-        <div class="nav-col">
+        <div class="nav-col nav-identity">
             <div class="nav-primary">Despoina Touska</div>
             <div class="nav-secondary">Machine Learning Scientist</div>
         </div>
 
-        <!-- Column 2: Status (Matches the "WORK / ABOUT" column in the image) -->
-        <div class="nav-col hide-on-mobile">
+        <div class="nav-col nav-status">
             <div class="nav-primary">Status</div>
-            <div class="nav-secondary">
-                Open to work
-            </div>
+            <div class="nav-secondary">Open to work</div>
         </div>
 
-        <!-- Column 3: Contact (Matches the "CONTACT / X IG IN" column in the image) -->
-        <div class="nav-col">
+        <div class="nav-col nav-contact">
             <div class="nav-primary">Contact</div>
             <div class="nav-secondary links">
                 <a href="https://drive.google.com/file/d/1jl10ys5lxetgyxcT68TQp1bNbkXv2mvq/view?usp=sharing"
-                    target="_blank" rel="noopener">CV</a>
-                <a href="https://www.linkedin.com/in/despoina-touska-351b72197/" target="_blank" rel="noopener">IN</a>
+                    target="_blank" rel="noopener noreferrer">
+                    CV
+                </a>
+                <a href="https://www.linkedin.com/in/despoina-touska-351b72197/" target="_blank"
+                    rel="noopener noreferrer">
+                    IN
+                </a>
                 <a href="mailto:d3py.tousk@gmail.com">@</a>
             </div>
         </div>
 
-        <!-- Column 4: Location & Time -->
-        <div class="nav-col hide-on-mobile" style="text-align: right;">
+        <div class="nav-col hide-on-mobile nav-location">
             <div class="nav-primary">Amsterdam, NL</div>
-            <div class="nav-secondary" id="header-time">10:44 PM CEST</div>
+            <div class="nav-secondary" id="header-time"></div>
         </div>
     </header>
 
@@ -498,6 +497,28 @@
         });
     </script>
     <script type="module" src="./src/main.js"></script>
+    <script>
+        function updateHeaderTime() {
+            const timeElement = document.getElementById("header-time");
+
+            if (!timeElement) return;
+
+            const now = new Date();
+
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                timeZone: "Europe/Amsterdam",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+                timeZoneName: "short"
+            });
+
+            timeElement.textContent = formatter.format(now);
+        }
+
+        updateHeaderTime();
+        setInterval(updateHeaderTime, 1000);
+    </script>
 </body>
 
 </html>

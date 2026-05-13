@@ -76,19 +76,14 @@ canvas {
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    padding: 20px 20px;
+    padding: 20px;
     box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    /* Adjust padding to fit your container */
     margin-bottom: 3rem;
-    /* Keep it small and precise */
+
     font-family: 'IBM Plex Mono', monospace;
-    /* The new font! */
     text-transform: uppercase;
     font-size: 16px;
-    /* Monospace fonts usually need to be a tiny bit smaller */
+    line-height: 1.35;
     letter-spacing: 0.05em;
 }
 
@@ -96,25 +91,24 @@ canvas {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    /* Space between top and bottom text */
 }
 
 .nav-primary {
     color: var(--text, #000000);
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .nav-secondary {
     color: #888888;
-    /* The signature gray from the image */
     font-weight: 400;
+    white-space: nowrap;
 }
 
-/* Specific styling for the link section */
 .nav-secondary.links {
     display: flex;
     gap: 12px;
-    /* Space between CV IN @ */
+    flex-wrap: wrap;
 }
 
 .nav-secondary.links a {
@@ -125,6 +119,63 @@ canvas {
 
 .nav-secondary.links a:hover {
     color: var(--text, #000000);
+}
+
+/* Time column */
+.nav-location {
+    text-align: right;
+}
+
+#header-time {
+    display: inline-block;
+    min-width: 10ch;
+    text-align: right;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablet */
+@media (max-width: 900px) {
+    .sleek-nav {
+        flex-wrap: wrap;
+        row-gap: 1.5rem;
+        font-size: 14px;
+    }
+
+    .nav-col {
+        width: 50%;
+    }
+
+    .nav-location {
+        text-align: left;
+    }
+
+    #header-time {
+        text-align: left;
+    }
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+    .sleek-nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 16px;
+        margin-bottom: 2rem;
+        font-size: 13px;
+    }
+
+    .nav-col {
+        width: 100%;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .nav-secondary.links {
+        gap: 14px;
+    }
 }
 
 /* header {
@@ -215,14 +266,13 @@ h1 {
 } */
 
 /* ================= GRID ================= */
-
+/* 
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
     margin-top: 26px;
     align-items: stretch;
-    /* same height in 3-column layout */
 }
 
 .card {
@@ -235,8 +285,61 @@ h1 {
     flex-direction: column;
     overflow: hidden;
     height: 100%;
+} */
+
+/* ================= ABOUT / WORK GRID ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 26px;
+    align-items: stretch;
 }
 
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    min-height: 120px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    border: 1.5px solid var(--text, #000);
+    box-shadow: 5px 5px 0 var(--text, #000);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
+}
+
+.card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--text, #000);
+}
+
+.card h2,
+.card h3 {
+    margin-top: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+}
+
+.card a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.card a:hover {
+    background: var(--text, #000);
+    color: var(--bg, #fff);
+}
 
 /* .card {
     background: #e4e4e4;
