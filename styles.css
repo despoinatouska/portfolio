@@ -392,6 +392,31 @@ canvas {
     line-height: 1.5;
 }
 
+.pub-conference {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    margin: 0;
+
+    padding: 6px 18px;
+
+    background: #2f80ed;
+    color: #fff;
+
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(47, 128, 237, 0.35);
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+
+    text-transform: none;
+    letter-spacing: 0.02em;
+}
+
 .pub-tabs-container {
     display: flex;
     flex-wrap: nowrap;
@@ -429,6 +454,7 @@ canvas {
 .pub-link-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
 
     padding: 6px 14px;
 
@@ -439,11 +465,21 @@ canvas {
 
     font-size: 12px;
     font-weight: 700;
+    line-height: 1;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     text-decoration: none;
 
     transition: all 0.3s ease;
+}
+
+.pub-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    margin-top: 4px;
 }
 
 .pub-link-btn:hover {
@@ -861,6 +897,18 @@ button,
 }
 
 /* ================= RESPONSIVE: TABLET ================= */
+
+@media (max-width: 640px) {
+    .pub-meta-row {
+        gap: 10px;
+    }
+
+    .pub-conference,
+    .pub-link-btn {
+        padding: 7px 12px;
+        font-size: 12px;
+    }
+}
 
 @media (max-width: 980px) {
     .container {
