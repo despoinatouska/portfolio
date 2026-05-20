@@ -135,46 +135,128 @@
 
     <div class="container blog main first page-content" id="blog-main">
         <h1>
-            How OrthoRF works
+            Introduction
         </h1>
         <p class='text'>
-            Lorem ipsum odor amet, consectetuer adipiscing elit. Urna non ligula sed ante ultricies. Nam nam tortor elit
-            turpis fermentum praesent. Tristique porttitor sodales rhoncus duis tellus mus vivamus lacus. Nam platea
-            lectus aliquam placerat; quis dignissim nisi ornare. Habitant himenaeos adipiscing dictum fringilla metus.
+            According to the temporal correlation hypothesis, the human brain seamlessly processes the complex geometric
+            structures of its environment by leveraging synchrony in neurons. Instead of relying on static activations,
+            biological vision operates through complex spatiotemporal dynamics where spiking neural networks bind
+            distinct features of a single object simply by "firing together" in time. These wave-like biological
+            processes mirror fundamental forces in nature, such as electromagnetic fields, which naturally organize
+            information through phase and amplitude.
         </p>
 
         <p class="text">
-            Sagittis donec nibh etiam leo eget iaculis proin. Dapibus morbi vitae ad vestibulum montes odio varius.
-            Ullamcorper finibus nibh suscipit libero velit suspendisse. Potenti potenti risus integer libero semper
-            potenti vivamus. Libero cras lectus netus faucibus nisl. Congue aliquet congue ante netus eu, vestibulum
-            arcu. Scelerisque tempor taciti senectus mus penatibus condimentum consequat in. Tempor conubia molestie
-            tristique; orci taciti augue. Justo ultrices consequat hac vivamus proin sodales.
+            This intersection of physics and neuroscience inspires a critical shift in machine learning: moving away
+            from static scalar processing toward dynamic, wave-inspired representations. Early artificial intelligence
+            models, such as Complex-valued AutoEncoders (CAE) [1], attempted to replicate this biological binding
+            mechanism by mapping phase and amplitude onto 2D complex numbers, where the phase angle represents object
+            identity. To scale this concept to complex, real-world visual data, the Rotating Features (RF) [2]
+            architecture extended this framework into higher-dimensional vector spaces. In an RF model, the magnitude of
+            a vector
+            denotes the presence of a feature, while its high-dimensional orientation, or rotation, encodes its
+            affiliation with other vectors.
+        </p>
+
+        <p class="text">
+            Building directly on this paradigm, OrthoRF (Orthogonal Rotating Features) introduces a competitive
+            synchronization mechanism to achieve unsupervised object-centric learning. Crucially, OrthoRF enforces a
+            strict geometric constraint: it mathematically drives the high-dimensional rotating representations of
+            different objects to be separated by exactly 90&deg; in the latent phase space. By enforcing this
+            absolute orthogonality, distinct object components are mapped to mutually independent, non-overlapping axes.
+            This disentanglement allows OrthoRF to naturally resolve complex occlusions and separate overlapping
+            regions, achieving clean object discovery without ever relying on post-hoc clustering algorithms.
         </p>
     </div>
 
     <div class="container blog main gray page-content">
         <img src="assets/figures/ALL_.png">
         <p class="caption">
-            Erat id non venenatis nullam leo nisl risus fames. Quis montes tortor aenean posuere non. Maximus dui cras
-            enim tristique; ipsum pellentesque ut. Mauris hac felis elit scelerisque nascetur risus adipiscing ultrices.
-            Quis augue pulvinar laoreet facilisis vel. Pharetra blandit nunc id, sem cubilia sit porttitor. Montes
-            hendrerit vestibulum vulputate tincidunt facilisis metus. Interdum mi vivamus nunc consectetur adipiscing;
-            aptent semper dictum.
+            Overview of the OrthoRF Architecture. The model utilizes an autoencoder with standard scalar-valued weights,
+            while maintaining $n$-dimensional (lifted) vector activations across all layers. Competitive binding is
+            enforced at two stages: first, in the binding mechanism by applying a softmax
+            across rotations; and second, through an orthogonality loss computed as the dot product between rotational
+            vectors.
         </p>
+    </div>
+
+    <div class="container blog main first page-content" id="blog-main">
+        <h1>
+            How OrthoRF works
+        </h1>
+        <p class="text">
+            The OrthoRF architecture is built on an autoencoder framework that maintains standard scalar-valued weights
+            while operating entirely on $n$-dimensional (lifted) vector activations across every layer&mdash;from the
+            initial input to the final output.
+        </p>
+
+        <p class="text">
+            To achieve distinct object separation, OrthoRF enforces competitive binding through two core components:
+        </p>
+
+        <ul>
+            <li>
+                <p class="text"><strong>Competition in the Binding Mechanism:</strong> The binding mechanism [3] is
+                    essential for object-centric representations, as it prevents destructive interference from
+                    suppressing object signals in the final output. We introduce competition by applying a SoftMax
+                    across rotations at every layer, encouraging clearer assignment of features to distinct object
+                    components.
+                </p>
+            </li>
+            <li>
+                <p class="text"><strong>The Orthogonality Loss:</strong> The network mathematically reinforces this
+                    competition using a
+                    structural penalty, calculated simply as the dot product between the rotational vectors, to drive
+                    their
+                    mutual separation.</p>
+            </li>
+        </ul>
+
     </div>
 
     <div class="container blog main page-content">
         <h1>Results</h1>
         <p class="text">
-            Arcu imperdiet nunc, dignissim ornare arcu nam eros cras venenatis. Non volutpat parturient luctus eros
-            litora natoque; elementum dui. Nulla cubilia et nascetur dictum nisi phasellus. Natoque himenaeos porta
-            vulputate interdum id mollis. Fames diam integer semper ligula per. Sapien ex magnis pellentesque neque
-            rhoncus conubia. Purus torquent nunc ligula auctor cras pharetra. Porttitor vulputate dis ante suspendisse a
-            iaculis massa sagittis.
+            In the paper, we include results on object discovery, boundary completion, highly overlapping scenes, noisy
+            datasets, and out-of-distribution tests.
         </p>
     </div>
-
     <div class="container blog extra-large gray page-content">
+        <div class="slide-menu">
+            <ul class="dots" id="slide-menu">
+                <li class="dot active"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+            </ul>
+        </div>
+
+        <div class="slide-content" , style="display: block;">
+            <img src="assets/figures/4SHAPES.png" style="max-height: 400px; width: auto;">
+            <p class="caption">
+                Qualitative OrthoRF results on 4Shapes dataset, after thresholding $\psi_{\text{final}}$. Objects occupy
+                distinct dimensions, and occluded parts are recovered.
+            </p>
+        </div>
+
+        <div class="slide-content" , style="display: none;">
+            <img src="assets/figures/sem_image2.png" style="max-height: 400px; width: auto;">
+            <p class="caption">
+                Qualitative results on noise-free SEM test images for $n = 5$. RF’s output (top row) is spread across
+                the orientation components, whereas the thresholded OrthoRF's output (bottom row) separates the SEM
+                layers and reveals occluded structures.
+            </p>
+        </div>
+
+        <div class="slide-content" , style="display: none;">
+            <img src="assets/figures/mnist_results1.png" style="max-height: 400px; width: auto;">
+            <p class="caption">
+                Qualitative results of OrthoRF on the MNIST&Shapes dataset. OrthoRF effectively separates the objects
+                while also recovering missing parts caused by occlusion.
+            </p>
+        </div>
+    </div>
+
+    <!-- <div class="container blog extra-large gray page-content">
         <div class="slide-menu">
             <ul class="dots" id="slide-menu">
                 <li class="dot active"></li>
@@ -233,17 +315,33 @@
                 lacinia torquent vehicula. Tempus non mauris vel placerat natoque.
             </p>
         </div>
-    </div>
+    </div> -->
 
     <div class="container blog main page-content">
-        <h1>Additional Analysis</h1>
-        <h2>Observation 1</h2>
+        <h1>Observations</h1>
+        <h2>OrthoRF achieves comparable object discovery performance and outperforms RF in boundary completion</h2>
+
         <p class="text">
-            Lorem ipsum odor amet, consectetuer adipiscing elit. Himenaeos sociosqu facilisi ante; cubilia sociosqu
-            magna libero. Dignissim vehicula felis taciti sollicitudin quam ligula a, vivamus porta. Tellus facilisi
-            pharetra non posuere a sapien. Sagittis felis lectus ac interdum pretium sit himenaeos.
+            To evaluate whether boundary completion is consistent across the dataset, we use labels that reveal the
+            hidden object parts.
+            Quantitative results show that OrthoRF outperforms RF in boundary completion, while achieving comparable
+            object discovery performance when overlapping regions are excluded from evaluation.
         </p>
-        <ol>
+
+
+        <h2>Large rotation dimensionality does not hurt feature binding or object separation</h2>
+
+        <p class="text">
+            We find that using higher-dimensional rotations does not harm the model’s ability to bind features or
+            separate objects.
+            We study the effect of varying the orthogonality loss weight \(\lambda\) and the number of slots \(n\) on
+            ARI and MBO.
+            For larger \(n\), performance remains high across different \(\lambda\) values, while for smaller \(n\),
+            sufficient
+            orthogonality regularization \((\lambda > 0)\) is crucial for effective object separation.
+        </p>
+
+        <!-- <ul>
             <li>
                 <p class="text">Conubia aliquet semper inceptos ultricies vel metus fusce litora. </p>
             </li>
@@ -251,51 +349,43 @@
                 <p class="text">Ultricies dis vehicula non lobortis hac sagittis urna dignissim ex.
                 </p>
             </li>
-        </ol>
+        </ul> -->
+    </div>
 
-        <h2>Observation 2</h2>
-        <p class="text">
-            Lorem ipsum odor amet, consectetuer adipiscing elit. Himenaeos sociosqu facilisi ante; cubilia sociosqu
-            magna libero. Dignissim vehicula felis taciti sollicitudin quam ligula a, vivamus porta. Tellus facilisi
-            pharetra non posuere a sapien. Sagittis felis lectus ac interdum pretium sit himenaeos.
+    <div class="container blog main gray page-content">
+        <img src="assets/figures/varyinglambda.png" style="max-height: 500px; width: auto;">
+        <p class="caption">
+            Effect of varying the orthogonality loss weight \(\lambda\) and the number of slots \(n\) on ARI and
+            MBO.
+            For larger \(n\), performance remains high across different \(\lambda\) values, while for smaller \(n\),
+            sufficient orthogonality regularization \((\lambda > 0)\) is crucial for effective object separation.
         </p>
-
-        <ul>
-            <li>
-                <p class="text">Conubia aliquet semper inceptos ultricies vel metus fusce litora. </p>
-            </li>
-            <li>
-                <p class="text">Ultricies dis vehicula non lobortis hac sagittis urna dignissim ex.
-                </p>
-            </li>
-        </ul>
     </div>
 
 
     <div class="container blog main page-content">
-        <h1>Conclusion</h1>
+        <h1>References</h1>
         <p class="text">
-            Per aptent diam; ut in mauris ultricies torquent conubia dolor. Aliquet venenatis sapien, dictum finibus ad
-            dui. Finibus sollicitudin nullam consectetur malesuada molestie semper dolor. Platea eget hac cursus aptent
-            maecenas penatibus vulputate. Ligula libero torquent sit per praesent praesent. Sodales risus mattis enim
-            odio risus tristique. Dapibus vivamus quis scelerisque sollicitudin penatibus placerat erat. Ante aliquet
-            vel; morbi quisque leo morbi. Ac sollicitudin imperdiet lacus integer cursus metus parturient euismod
-            sociosqu.
+            [1] Löwe, S., Lippe, P., Rudolph, M., & Welling, M. (2022). Complex-valued autoencoders for object
+            discovery. arXiv preprint arXiv:2204.02075.
+        </p>
+        <p class="text">
+            [2] Löwe, S., Lippe, P., Locatello, F., & Welling, M. (2023). Rotating features for object discovery.
+            Advances in Neural Information Processing Systems, 36, 59606-59635.
+        </p>
+        <p class="text">
+            [3] Reichert, D. P., & Serre, T. (2013). Neuronal synchrony in complex-valued deep networks. arXiv preprint
+            arXiv:1312.6115.
         </p>
     </div>
 
     <div class="container blog main page-content">
         <h1>Citation</h1>
-        <p class="text">
-            Dictumst eu himenaeos malesuada nisi eros auctor id suspendisse. Ipsum parturient est vitae proin maecenas.
-            Nulla mollis vivamus cras nam dapibus consectetur. Id efficitur ac ultricies ornare at litora. Vestibulum
-            nibh cursus eu gravida vivamus sem vulputate. Montes nisi ipsum urna vitae semper suscipit.
-        </p>
-        <pre><code class="plaintext">@article{doe2048agi,
-    title={Artificial General Intelligence},
-    author={Doe John},
-    journal={nature},
-    year={2048}
+        <pre><code class="plaintext">@inproceedings{touskaorthorf,
+  title={OrthoRF: Exploring Orthogonality in Object-Centric Representations},
+  author={Touska, Despoina and Auer, Bastiaan Onne Fagginger and Onose, Alexandru and Kasarla, Tejaswi and Rey, Luis Armando P{\'e}rez and Lipp, Maximilian and Amitonova, Lyubov and Oswald, Martin R and Cerfontaine, Pascal},
+  booktitle={The Fourteenth International Conference on Learning Representations}
+}
 }</code></pre>
     </div>
 
