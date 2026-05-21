@@ -23,6 +23,10 @@
 
     <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css" />
     <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="papers-portfolio-style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
     <link href="assets/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
@@ -49,9 +53,27 @@
 </head>
 
 <body>
+
+    <div class="paper-shell">
+        <nav class="sleek-nav page-content" aria-label="Main navigation">
+            <div class="nav-col">
+                <span class="nav-primary">Despoina Touska</span>
+                <span class="nav-secondary">Research / Papers</span>
+            </div>
+            <div class="nav-col nav-secondary links">
+                <a href="https://despoinatouska.github.io/portfolio/">Portfolio</a>
+                <a href="https://openreview.net/forum?id=GjQ5JXpRQF">OpenReview</a>
+                <a href="https://openreview.net/pdf?id=GjQ5JXpRQF">Paper</a>
+            </div>
+            <div class="nav-col nav-location">
+                <span class="nav-primary">Amsterdam</span>
+                <span class="nav-secondary" id="header-time">Research page</span>
+            </div>
+        </nav>
+    </div>
     <!-- Title Page -->
     <!-- Dark Theme Example: Change the background colour dark and change the following div "blog-title" into "blog-title white". -->
-    <div class="container blog" id="first-content" style="background-color: #E0E4E6;">
+    <div class="container blog paper-hero" id="first-content">
         <div class="blog-title no-cover">
             <div class="blog-intro">
                 <div>
@@ -71,13 +93,13 @@
                         </p>
 
                         <p class="author author-affiliation" style="padding-top: 0px;">
-                            <sup>1</sup> UvA,
-                            <sup>2</sup> ASML,
-                            <sup>3</sup> ARCNL,
-                            <sup>4</sup> TH Köln <br>
-                            <sup>†</sup> Research done during an internship at ASML, Veldhoven, the
+                            <sup>1</sup> University of Amsterdam, Amsterdam, the Netherlands <br>
+                            <sup>2</sup> ASML Netherlands B.V., Veldhoven, the Netherlands <br>
+                            <sup>3</sup> ARCNL, Amsterdam, the Netherlands <br>
+                            <sup>4</sup> TH Köln, Cologne, Germany <br>
+                            <sup>†</sup> Research done during an internship at ASML Netherlands B.V, Veldhoven, the
                             Netherlands. <br>
-                            <sup>‡</sup> Research partially done at ASML, Veldhoven, the Netherlands
+                            <sup>‡</sup> Research partially done at ASML Netherlands B.V, Veldhoven, the Netherlands
                             <br>
                         </p>
 
@@ -231,7 +253,7 @@
             </ul>
         </div>
 
-        <div class="slide-content" , style="display: block;">
+        <div class="slide-content" style="display: block;">
             <img src="assets/figures/4SHAPES.png">
             <p class="caption">
                 Qualitative OrthoRF results on 4Shapes dataset, after thresholding $\psi_{\text{final}}$. Objects occupy
@@ -239,7 +261,7 @@
             </p>
         </div>
 
-        <div class="slide-content" , style="display: none;">
+        <div class="slide-content" style="display: none;">
             <img src="assets/figures/sem_image2.png">
             <p class="caption">
                 Qualitative results on noise-free SEM test images for $n = 5$. RF’s output (top row) is spread across
@@ -248,7 +270,7 @@
             </p>
         </div>
 
-        <div class="slide-content" , style="display: none;">
+        <div class="slide-content" style="display: none;">
             <img src="assets/figures/mnist_results1.png"
                 style="max-width: 100%; height: auto; max-height: 400px; object-fit: contain;">
             <p class="caption">
@@ -335,6 +357,21 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <script src="clarity/clarity.js"></script>
     <script src="assets/scripts/main.js"></script>
+
+
+    <script>
+        const timeEl = document.getElementById('header-time');
+        const updateHeaderTime = () => {
+            if (!timeEl) return;
+            timeEl.textContent = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/Amsterdam',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(new Date());
+        };
+        updateHeaderTime();
+        setInterval(updateHeaderTime, 30000);
+    </script>
 
 </body>
 

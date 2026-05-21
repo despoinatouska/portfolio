@@ -230,114 +230,144 @@
                 </div>
             </div> -->
 
-            <section class="card publications" aria-label="Selected Publications">
-                <div class="timeline-header">
-                    <div class="timeline-title-ellipse">
-                        <span>Selected Publications</span>
-                    </div>
-                </div>
+            <div class="feature-row">
 
-                <div class="pub-display-area">
-                    <div class="pub-content active" id="pub1">
-                        <h3 class="pub-title ortho-title">OrthoRF : Exploring Orthogonality in Object-Centric
-                            Representations</h3>
-                        <p class="pub-authors">Touska, D., Auer, B., Onose, A., Kasarla, T., Pérez Rey, L.,
-                            Lipp, M.,
-                            Amitonova, L., Oswald, M., Cerfontaine, P.</p>
-                        <div class="pub-meta-row">
-                            <p class="pub-conference">ICLR 2026</p>
-                            <a href="orthorf.html" class="pub-link-btn">Project Page ↗</a>
+                <section class="card publications feature-panel publications-panel" aria-label="Selected Publications">
+                    <div class="timeline-header">
+                        <div class="timeline-title-ellipse">
+                            <span>Selected Publications</span>
                         </div>
-                        <!-- <p class="pub-description">
-                            Short description of the publication goes here.
-                        </p> -->
                     </div>
-                    <div class="pub-content" id="pub2">
-                        <h3 class="pub-title">Graph-based
-                            data association in multiple object tracking : A survey</h3>
-                        <p class="pub-authors">Touska, D., Gkountakos, K., Ioannidis, K., Tsikrika, T.,
-                            Vrochidis, S.,
-                            Kompatsiaris, I.</p>
-                        <p class="pub-conference">MMM 2023</p>
-                    </div>
-                    <div class="pub-content" id="pub3">
-                        <h3 class="pub-title"> Spatio-temporal
-                            activity detection and recognition in untrimmed surveillance videos</h3>
-                        <p class="pub-authors">Gkountakos, K., Touska, D., Ioannidis, K., Tsikrika, T.,
-                            Vrochidis, S.,
-                            Kompatsiaris, I.</p>
-                        <p class="pub-conference">ICMR 2021</p>
-                    </div>
-                    <div class="pub-content" id="pub4">
-                        <h3 class="pub-title"> Detecting tampered videos with multimedia forensics and deep
-                            learning
-                        </h3>
-                        <p class="pub-authors">Zampoglou, M., Markatopoulou, F., Mercier, G., Touska, D.,
-                            Apostolidis,
-                            E., Papadopoulos, S., ...,
-                            Kompatsiaris, I.</p>
-                        <p class="pub-conference">MMM 2019</p>
-                    </div>
-                    <div class="pub-content" id="pub5">
-                        <h3 class="pub-title">ITI-CERTH participation in ActEV and AVS tracks of TRECVID 2021
-                        </h3>
-                        <p class="pub-authors">Gkountakos, K., Galanopoulos, D., Touska, D., Ioannidis, K.,
-                            Vrochidis,
-                            S., Mezaris, V., Kompatsiaris, I.</p>
-                        <p class="pub-conference">NIST TRECVID Workshop 2021</p>
-                    </div>
-                </div>
 
-                <div class="pub-dots-container" aria-label="Publication navigation">
-                    <button class="pub-dot active" onclick="showPub(1, event)" aria-label="Show publication 1"></button>
-                    <button class="pub-dot" onclick="showPub(2, event)" aria-label="Show publication 2"></button>
-                    <button class="pub-dot" onclick="showPub(3, event)" aria-label="Show publication 3"></button>
-                    <button class="pub-dot" onclick="showPub(4, event)" aria-label="Show publication 4"></button>
-                    <button class="pub-dot" onclick="showPub(5, event)" aria-label="Show publication 5"></button>
-                </div>
-            </section>
+                    <div class="pub-display-area">
+                        <div class="pub-content active" id="pub1">
+                            <h3 class="feature-title pub-title ortho-title">
+                                OrthoRF: Exploring Orthogonality in Object-Centric Representations
+                            </h3>
 
-            <div class="card gadget-container" aria-label="Location Gadget">
-                <div class="timeline-header" style="position: absolute; top: 20px; left: 20px; z-index: 10; margin: 0;">
-                    <div class="timeline-title-ellipse"><span>Map</span></div>
-                </div>
+                            <p class="pub-authors feature-secondary">
+                                Touska, D., Auer, B., Onose, A., Kasarla, T., Pérez Rey, L.,
+                                Lipp, M., Amitonova, L., Oswald, M., Cerfontaine, P.
+                            </p>
 
-                <button class="gadget-nav nav-left" onclick="manualToggle()">&#10094;</button>
-                <button class="gadget-nav nav-right" onclick="manualToggle()">&#10095;</button>
+                            <div class="pub-meta-row">
+                                <p class="pub-conference">ICLR 2026</p>
+                                <a href="orthorf.html" class="pub-link-btn pub-extra-link feature-secondary">
+                                    Project Page ↗
+                                </a>
+                            </div>
+                        </div>
 
-                <div class="gadget-slide active" id="slide-1">
-                    <div class="map-figure-bg">
-                        <img src="ams.webp" alt="Map of Amsterdam" class="map-img">
-                        <div class="map-overlay">
-                            <div class="city-name">AMSTERDAM</div>
-                            <div class="country-name">The Netherlands</div>
-                            <div class="time-row" id="ams-time">00:00:00</div>
-                            <div class="weather-row">
-                                <span id="ams-temp">--°C</span> • <span id="ams-desc">Loading...</span>
+                        <div class="pub-content" id="pub2">
+                            <h3 class="feature-title pub-title">
+                                Graph-based data association in multiple object tracking: A survey
+                            </h3>
+
+                            <p class="pub-authors feature-secondary">
+                                Touska, D., Gkountakos, K., Ioannidis, K., Tsikrika, T.,
+                                Vrochidis, S., Kompatsiaris, I.
+                            </p>
+
+                            <div class="pub-meta-row">
+                                <p class="pub-conference">MMM 2023</p>
+                            </div>
+                        </div>
+
+                        <div class="pub-content" id="pub3">
+                            <h3 class="feature-title pub-title">
+                                Spatio-temporal activity detection and recognition in untrimmed surveillance videos
+                            </h3>
+                            <p class="pub-authors feature-secondary">
+                                Gkountakos, K., Touska, D., Ioannidis, K., Tsikrika, T.,
+                                Vrochidis, S., Kompatsiaris, I.
+                            </p>
+                            <p class="pub-conference">ICMR 2021</p>
+                        </div>
+
+                        <div class="pub-content" id="pub4">
+                            <h3 class="feature-title pub-title">
+                                Detecting tampered videos with multimedia forensics and deep learning
+                            </h3>
+                            <p class="pub-authors feature-secondary">
+                                Zampoglou, M., Markatopoulou, F., Mercier, G., Touska, D.,
+                                Apostolidis, E., Papadopoulos, S., Kompatsiaris, I.
+                            </p>
+                            <p class="pub-conference">MMM 2019</p>
+                        </div>
+
+                        <div class="pub-content" id="pub5">
+                            <h3 class="feature-title pub-title">
+                                ITI-CERTH participation in ActEV and AVS tracks of TRECVID 2021
+                            </h3>
+                            <p class="pub-authors feature-secondary">
+                                Gkountakos, K., Galanopoulos, D., Touska, D., Ioannidis, K.,
+                                Vrochidis, S., Mezaris, V., Kompatsiaris, I.
+                            </p>
+                            <p class="pub-conference">NIST TRECVID Workshop 2021</p>
+                        </div>
+                    </div>
+
+                    <div class="pub-dots-container" aria-label="Publication navigation">
+                        <button class="pub-dot active" onclick="showPub(1, event)"
+                            aria-label="Show publication 1"></button>
+                        <button class="pub-dot" onclick="showPub(2, event)" aria-label="Show publication 2"></button>
+                        <button class="pub-dot" onclick="showPub(3, event)" aria-label="Show publication 3"></button>
+                        <button class="pub-dot" onclick="showPub(4, event)" aria-label="Show publication 4"></button>
+                        <button class="pub-dot" onclick="showPub(5, event)" aria-label="Show publication 5"></button>
+                    </div>
+                </section>
+
+
+                <section class="card blog-slider-card feature-panel blog-panel" aria-label="Blog posts">
+                    <div class="timeline-header">
+                        <div class="timeline-title-ellipse">
+                            <span>Blog</span>
+                        </div>
+                    </div>
+
+                    <button class="blog-nav blog-nav-left" onclick="manualBlogToggle(-1, event)"
+                        aria-label="Previous blog post">
+                        &#10094;
+                    </button>
+
+                    <button class="blog-nav blog-nav-right" onclick="manualBlogToggle(1, event)"
+                        aria-label="Next blog post">
+                        &#10095;
+                    </button>
+
+                    <div class="blog-slide active" id="blog-slide-1">
+                        <div class="blog-slide-content">
+
+                            <h3 class="feature-title blog-post-title">
+                                OrthoRF: Orthogonality in Object-Centric Representations
+                            </h3>
+                            <div class="blog-date">April 2026</div>
+
+                            <p class="blog-notes feature-secondary">
+                                Notes on rotating features, object-centric learning, and how orthogonal latent
+                                directions can help
+                                separate visual entities in crowded or overlapping scenes.
+                            </p>
+
+                            <div class="blog-label-row">
+                                <span class="blog-label">CV</span>
+                                <span class="blog-label">Neuroscience</span>
+
+                                <a href="orthorf.html" class="pub-link-btn blog-read-link">
+                                    Read ↗
+                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="gadget-slide" id="slide-2">
-                    <div class="map-figure-bg">
-                        <img src="thessaloniki.jpg" alt="Map of Thessaloniki" class="map-img">
-                        <div class="map-overlay">
-                            <div class="city-name">THESSALONIKI</div>
-                            <div class="country-name">Greece</div>
-                            <div class="time-row" id="thess-time">00:00:00</div>
-                            <div class="weather-row">
-                                <span id="thess-temp">--°C</span> • <span id="thess-desc">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
+
+            <!-- <div class="blog-dots-container" aria-label="Blog navigation">
+                <button class="blog-dot active" onclick="showBlogSlide(1, event)"
+                    aria-label="Show blog post 1"></button>
+            </div> -->
+        </section>
+
     </div>
-
-
-    <link rel="preload" as="image" href="ams.webp">
-    <link rel="preload" as="image" href="thessaloniki.jpg">
 
     <footer class="site-footer">
         <p>
@@ -350,53 +380,109 @@
     </footer>
 
     <script>
-        // --- 1. Weather Logic (Open-Meteo) ---
-        async function updateAllWeather() {
-            const locations = [
-                { id: 'ams', lat: 52.3676, lon: 4.9041 },
-                { id: 'thess', lat: 40.6401, lon: 22.9444 }
-            ];
-            for (const loc of locations) {
-                try {
-                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true`);
-                    const data = await response.json();
-                    document.getElementById(`${loc.id}-temp`).innerText = `${Math.round(data.current_weather.temperature)}°C`;
-                    document.getElementById(`${loc.id}-desc`).innerText = getWeatherText(data.current_weather.weathercode);
-                } catch (err) { console.error(err); }
+        let currentBlogSlide = 1;
+        const totalBlogSlides = 1; // Change to 2, 3, etc. when you add more posts.
+        let blogInterval;
+
+        function showBlogSlide(index, e) {
+            currentBlogSlide = index;
+
+            document.querySelectorAll('.blog-slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            const selectedSlide = document.getElementById('blog-slide-' + index);
+            if (selectedSlide) {
+                selectedSlide.classList.add('active');
+            }
+
+            document.querySelectorAll('.blog-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index - 1);
+            });
+
+            if (e) {
+                clearInterval(blogInterval);
+                startBlogSlider();
             }
         }
 
-        function getWeatherText(code) {
-            const codes = { 0: "Clear", 1: "Fair", 2: "Cloudy", 3: "Overcast", 61: "Rain" };
-            return codes[code] || "Cloudy";
+        function nextBlogSlide() {
+            const nextIndex = currentBlogSlide % totalBlogSlides + 1;
+            showBlogSlide(nextIndex);
         }
+
+        function manualBlogToggle(direction, e) {
+            let nextIndex = currentBlogSlide + direction;
+
+            if (nextIndex < 1) {
+                nextIndex = totalBlogSlides;
+            }
+
+            if (nextIndex > totalBlogSlides) {
+                nextIndex = 1;
+            }
+
+            showBlogSlide(nextIndex, e);
+        }
+
+        function startBlogSlider() {
+            if (totalBlogSlides <= 1) return;
+            blogInterval = setInterval(nextBlogSlide, 5000);
+        }
+
+        loader.addEventListener("click", () => {
+            startBlogSlider();
+        });
+    </script>
+
+    <script>
+        // --- 1. Weather Logic (Open-Meteo) ---
+        // async function updateAllWeather() {
+        //     const locations = [
+        //         { id: 'ams', lat: 52.3676, lon: 4.9041 },
+        //         { id: 'thess', lat: 40.6401, lon: 22.9444 }
+        //     ];
+        //     for (const loc of locations) {
+        //         try {
+        //             const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true`);
+        //             const data = await response.json();
+        //             document.getElementById(`${loc.id}-temp`).innerText = `${Math.round(data.current_weather.temperature)}°C`;
+        //             document.getElementById(`${loc.id}-desc`).innerText = getWeatherText(data.current_weather.weathercode);
+        //         } catch (err) { console.error(err); }
+        //     }
+        // }
+
+        // function getWeatherText(code) {
+        //     const codes = { 0: "Clear", 1: "Fair", 2: "Cloudy", 3: "Overcast", 61: "Rain" };
+        //     return codes[code] || "Cloudy";
+        // }
 
         // --- 2. Clock Logic ---
-        function updateClocks() {
-            const amsOptions = { timeZone: 'Europe/Amsterdam', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            const thessOptions = { timeZone: 'Europe/Athens', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        // function updateClocks() {
+        //     const amsOptions = { timeZone: 'Europe/Amsterdam', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        //     const thessOptions = { timeZone: 'Europe/Athens', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
 
-            document.getElementById('ams-time').innerText = new Intl.DateTimeFormat('en-GB', amsOptions).format(new Date());
-            document.getElementById('thess-time').innerText = new Intl.DateTimeFormat('en-GB', thessOptions).format(new Date());
-        }
+        //     document.getElementById('ams-time').innerText = new Intl.DateTimeFormat('en-GB', amsOptions).format(new Date());
+        //     document.getElementById('thess-time').innerText = new Intl.DateTimeFormat('en-GB', thessOptions).format(new Date());
+        // }
 
         // --- 3. Slider Logic ---
-        let autoSlide = setInterval(toggleGadget, 5000);
+        // let autoSlide = setInterval(toggleGadget, 5000);
 
-        function toggleGadget() {
-            document.getElementById('slide-1').classList.toggle('active');
-            document.getElementById('slide-2').classList.toggle('active');
-        }
+        // function toggleGadget() {
+        //     document.getElementById('slide-1').classList.toggle('active');
+        //     document.getElementById('slide-2').classList.toggle('active');
+        // }
 
-        function manualToggle() {
-            clearInterval(autoSlide);
-            toggleGadget();
-            autoSlide = setInterval(toggleGadget, 5000);
-        }
+        // function manualToggle() {
+        //     clearInterval(autoSlide);
+        //     toggleGadget();
+        //     autoSlide = setInterval(toggleGadget, 5000);
+        // }
 
-        updateAllWeather();
-        setInterval(updateClocks, 1000);
-        updateClocks();
+        // updateAllWeather();
+        // setInterval(updateClocks, 1000);
+        // updateClocks();
 
         document.addEventListener("mouseenter", () => {
             cursorDot.style.opacity = "1";
@@ -440,20 +526,6 @@
                 easing: "ease-out"
             });
         });
-
-
-        // let currentPub = 1;
-        // const totalPubs = 5;
-
-        // setInterval(() => {
-        //     currentPub = currentPub % totalPubs + 1;
-        //     showPub(currentPub);
-
-        //     // update dots
-        //     document.querySelectorAll('.pub-dot').forEach((dot, i) => {
-        //         dot.classList.toggle('active', i === currentPub - 1);
-        //     });
-        // }, 4000);
 
         let currentPub = 1;
         const totalPubs = 5;

@@ -1,0 +1,343 @@
+/* Portfolio-style override for the papers page
+   Place this after main_free.css and clarity.css. */
+:root {
+    --bg: #f5f6f8;
+    --card: #fff;
+    --text: #0b0b0b;
+    --muted: #6b6b6b;
+    --accent: #f07a1a;
+    --green: #02f758;
+    --radius: 20px;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg) !important;
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: inherit; }
+
+.paper-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Header borrowed from the portfolio page */
+.sleek-nav {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 3rem;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    line-height: 1.35;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.nav-col { display: flex; flex-direction: column; gap: 4px; }
+.nav-primary { color: var(--text); font-weight: 600; white-space: nowrap; }
+.nav-secondary { color: #888; font-weight: 400; white-space: nowrap; }
+.nav-secondary.links { display: flex; flex-wrap: wrap; gap: 12px; }
+.nav-secondary.links a { color: inherit; transition: color 0.2s ease; }
+.nav-secondary.links a:hover { color: var(--text); }
+.nav-location { text-align: right; }
+#header-time { display: inline-block; min-width: 10ch; text-align: right; }
+
+/* Card language */
+.portfolio-card,
+.container.blog.main,
+.container.blog.extra-large {
+    background: var(--card) !important;
+    border: 1.5px solid var(--text);
+    border-radius: var(--radius);
+    box-shadow: 5px 5px 0 var(--text);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.container.blog.main:hover,
+.container.blog.extra-large:hover,
+.paper-hero:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--text);
+}
+
+/* Hero */
+.paper-hero {
+    background: var(--card) !important;
+    border: 1.5px solid var(--text);
+    border-radius: var(--radius);
+    box-shadow: 5px 5px 0 var(--text);
+    padding: 34px;
+    margin-bottom: 26px;
+}
+
+.paper-hero .blog-title,
+.paper-hero .blog-title.no-cover,
+.paper-hero .blog-intro {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.paper-hero .blog-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+    gap: 28px;
+    align-items: center;
+}
+
+.paper-hero .title,
+.container.blog.main h1,
+.container.blog.main h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+    color: var(--text);
+}
+
+.paper-hero .title {
+    margin: 0 0 18px;
+    font-size: clamp(34px, 6vw, 76px);
+    line-height: 0.98;
+    max-width: 980px;
+}
+
+.paper-hero .author,
+.paper-hero .abstract,
+.container.blog.main .text,
+.container.blog.main li,
+.caption {
+    color: #444;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.paper-hero .author { margin: 0 0 14px; }
+.paper-hero .author-affiliation { color: var(--muted); font-size: 14px; }
+.paper-hero .abstract { max-width: 780px; margin: 0 0 16px; }
+.author-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.author-link:hover { background: var(--text); color: var(--bg); }
+
+.paper-hero .info {
+    margin-top: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.paper-hero .info p { margin: 0; color: var(--muted); }
+
+.button.icon,
+.paper-link-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px !important;
+    margin: 0 8px 10px 0;
+    background: #fff !important;
+    color: #111 !important;
+    border: 1px solid #111 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.button.icon:hover,
+.paper-link-btn:hover {
+    background: #111 !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.blog-cover {
+    position: relative;
+    min-height: 320px;
+    border: 1.5px solid var(--text);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+.blog-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-cover .background {
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    filter: blur(20px);
+    transform: scale(1.08);
+    z-index: 0;
+}
+
+.blog-cover .foreground {
+    position: relative;
+    z-index: 1;
+    object-fit: contain;
+    padding: 20px;
+}
+
+/* Content sections */
+.container.blog.main,
+.container.blog.extra-large {
+    max-width: 1200px !important;
+    margin: 0 auto 26px !important;
+    padding: 26px !important;
+}
+
+.container.blog.main.gray,
+.container.blog.extra-large.gray {
+    background: #fff !important;
+}
+
+.container.blog.main h1 {
+    margin-top: 0;
+    font-size: 26px;
+}
+
+.container.blog.main h2 {
+    margin-top: 28px;
+    font-size: 18px;
+}
+
+.container.blog.main .text,
+.container.blog.main p.text {
+    max-width: 900px;
+    margin-left: 0;
+    text-align: left;
+}
+
+.container.blog.extra-large img,
+.container.blog.main.gray img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: calc(var(--radius) - 6px);
+}
+
+.caption {
+    max-width: 900px;
+    margin: 18px auto 0;
+    color: var(--muted);
+    text-align: center;
+}
+
+.slide-menu .dots,
+.dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
+    margin: 0 0 18px;
+    list-style: none;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: #d3d3d3;
+    border-radius: 50%;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.dot.active { background: #000; transform: scale(1.2); }
+
+pre {
+    background: #0b0b0b !important;
+    color: #fff;
+    border-radius: calc(var(--radius) - 4px);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+code { font-family: 'IBM Plex Mono', monospace; }
+
+footer {
+    width: 100%;
+    padding: 16px 20px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #888;
+}
+
+footer a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+footer a:hover { color: var(--text); }
+
+.page-content {
+    opacity: 0;
+    animation: page-content-in 420ms ease-out 180ms forwards;
+}
+
+@view-transition { navigation: auto; }
+.ortho-title { view-transition-name: ortho-title; }
+
+@keyframes page-content-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 980px) {
+    .paper-shell { padding: 16px; }
+    .sleek-nav { flex-wrap: wrap; row-gap: 1.5rem; font-size: 14px; }
+    .nav-col { width: 50%; }
+    .nav-location, #header-time { text-align: left; }
+    .paper-hero .blog-intro { grid-template-columns: 1fr; }
+    .blog-cover { min-height: 260px; }
+}
+
+@media (max-width: 640px) {
+    .paper-shell { padding: 14px; }
+    .sleek-nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 16px;
+        margin-bottom: 2rem;
+        font-size: 13px;
+    }
+    .nav-col { width: 100%; }
+    .nav-secondary.links { gap: 14px; }
+    .paper-hero,
+    .container.blog.main,
+    .container.blog.extra-large { padding: 20px !important; }
+    .paper-hero .title { font-size: clamp(31px, 12vw, 48px); }
+    .paper-hero .author,
+    .paper-hero .abstract,
+    .container.blog.main .text,
+    .caption { font-size: 15px; }
+    .button.icon { width: 100%; margin-right: 0; }
+    .container.blog.main:hover,
+    .container.blog.extra-large:hover,
+    .paper-hero:hover { transform: none; box-shadow: 5px 5px 0 var(--text); }
+}
