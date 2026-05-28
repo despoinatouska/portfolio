@@ -303,7 +303,7 @@ canvas {
     grid-template-columns: 2fr 1fr;
     gap: 18px;
     align-items: stretch;
-    transition: grid-template-columns 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-columns 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .feature-row:has(.blog-panel:hover) {
@@ -595,6 +595,31 @@ canvas {
 }
 
 /* ================= COLLAPSED FEATURE STATES ================= */
+/* 1. Smooth transition base ONLY for blog-notes */
+.blog-panel .blog-notes {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 2. Hide blog-notes immediately when blog shrinks */
+.feature-row:not(:has(.blog-panel:hover)) .blog-panel .blog-notes {
+    opacity: 0;
+    visibility: hidden;
+    transition-delay: 0s;
+}
+
+/* 3. Show blog-notes smoothly when blog expands to 2/3 */
+.feature-row:has(.blog-panel:hover) .blog-panel .blog-notes {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.2s;
+    /* Waits for the panel to expand before fading in */
+}
+
+/* --------------------------------------------------- */
+/* 4. Your original display logic for the other elements */
+/* --------------------------------------------------- */
 
 .feature-row:not(:has(.blog-panel:hover)) .blog-panel .feature-secondary {
     display: none;
@@ -1041,6 +1066,14 @@ button,
 
     .resume-slide-btn {
         padding: 12px 18px;
+    }
+
+    .blog-notes {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        max-height: none;
+        overflow: visible;
     }
 }
 
