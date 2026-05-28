@@ -1,0 +1,533 @@
+<html lang="en-GB">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin" />
+    <title>OrthoRF : Exploring Orthogonality in Object-Centric Representations</title>
+    <meta name="description"
+        content="We've presented Clarity, a minimalist and elegant website template for AI research.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="https://shikun.io/projects/clarity" property="og:url">
+    <meta content="Clarity" property="og:title">
+    <meta content="Website Template for AI Research" property="og:description">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@your_twitter_id">
+    <meta name="twitter:description" content="OrthoRF : Exploring Orthogonality in Object-Centric Representations">
+    <meta name="twitter:image:src" content="assets/figures/clarity.png">
+
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
+    <link href="assets/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <script src="assets/scripts/navbar.js"></script> <!-- Comment to remove table of content. -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            "HTML-CSS": {
+              scale: 95,
+              fonts: ["Gyre-Pagella"],
+              imageFont: null,
+              undefinedFamily: "'Arial Unicode MS', cmbright"
+            },
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true
+              }
+          });
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- Title Page -->
+    <!-- Dark Theme Example: Change the background colour dark and change the following div "blog-title" into "blog-title white". -->
+    <div class="container blog" id="first-content" style="background-color: #F9F8FB;">
+        <div class="blog-title no-cover">
+            <div class="blog-intro">
+                <div>
+                    <h1 class="title ortho-title">Understanding Barlow Twins: Similarity and Redundancy Reduction in SSL
+                    </h1>
+
+                    <div class="page-content">
+                        <p class="author">
+                            Blog written by <a href="https://despoinatouska.github.io/portfolio/"
+                                class="author-link">Despoina
+                                Touska</a>
+                        </p>
+
+
+
+                        <!-- <div class="info">
+                            <div>
+                                <a href="https://arxiv.org/pdf/2103.03230" class="button icon"
+                                    style="background-color: rgba(255, 255, 255, 0.2)"> Paper <i
+                                        class="fa-regular fa-file-lines"></i></a> &nbsp;&nbsp;
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="blog-cover page-content"
+                    style="width: 120% !important; max-width: none !important; height: auto !important;">
+                    <img class="foreground" src="assets/figures/bt.png"
+                        style="width: 120% !important; max-width: none !important; height: auto !important;">
+                    <!-- <img class="background" src="assets/figures/combo.png"> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container blog main first page-content" id="blog-main">
+        <h1>
+            Introduction
+        </h1>
+
+        <p class="text">
+            One of the central goals of machine learning is learning useful representations of data.
+            Interestingly, the most effective systems for representation learning are often not purely generative
+            models.
+            Instead of reconstructing images pixel-by-pixel, many successful approaches focus on extracting compact and
+            meaningful embeddings that preserve the semantic content of the input.
+        </p>
+
+        <p class="text">
+            A natural way to achieve this is through <b>joint embedding</b> architectures.
+            The core idea is simple: if two images represent the same underlying scene — even after corruption,
+            augmentation, or transformation — their representations should remain similar.
+            This principle is at the heart of <b>Siamese neural networks</b> [1], one of the earliest representation
+            learning frameworks.
+        </p>
+
+        <p class="text">
+            Siamese networks were originally introduced for tasks such as fraudulent signature detection.
+            The architecture consists of two identical neural networks that share weights and process two input images
+            independently.
+            Rather than generating images, the networks produce embedding vectors that capture the semantic structure of
+            the inputs.
+        </p>
+
+        <p class="text">
+            During training, the model receives both positive and negative pairs.
+            Positive pairs contain signatures from the same person, while negative pairs contain forged signatures.
+            The objective is to make embeddings from positive pairs as similar as possible and embeddings from negative
+            pairs as different as possible.
+            Once trained, the model can compare the embedding of a new signature against a reference signature to
+            determine whether it is authentic.
+        </p>
+
+        <p class="text">
+            What makes this approach powerful is that the network learns meaningful internal representations without
+            explicitly generating or reconstructing images.
+        </p>
+
+        <h2>
+            The Problem of Representation Collapse
+        </h2>
+
+        <p class="text">
+            Joint embedding methods, however, introduce an important challenge.
+            If the objective is simply to maximize similarity between embeddings, the network may converge to a trivial
+            solution where it outputs the same embedding vector for every input.
+            This phenomenon is known as <b>representation collapse</b>.
+        </p>
+
+        <p class="text">
+            Early Siamese approaches addressed this problem using what is now known as <b>contrastive learning</b>.
+            By introducing both positive and negative examples, the model learns not only which samples should be
+            similar, but also which should be distinct.
+            Contrastive methods have been highly successful for both images and videos, but they often require large
+            batch sizes, many negative samples, and significant computational resources.
+        </p>
+
+        <blockquote class="quote">
+            “Because of the curse of dimensionality, in the worst case, the number of contrastive examples may grow
+            exponentially with the dimension of the representation.
+            This is the main reason why I argue against contrastive methods.”
+            <br><br>
+            — Yann LeCun, <i>A Path Towards Autonomous Machine Intelligence [2]</i>
+        </blockquote>
+
+        <h2>
+            From Neuroscience to Barlow Twins
+        </h2>
+
+        <p class="text">
+            At the same time, fully generative approaches were also found to be inefficient for self-supervised
+            representation learning.
+            This motivated researchers to search for alternative principles inspired by neuroscience.
+        </p>
+
+        <p class="text">
+            One important inspiration came from the work of computational neuroscientist <b>Horace Barlow</b>,
+            who hypothesized in 1961 that biological visual systems operate by reducing redundancy between neurons [3].
+            Later, researchers proposed applying this idea directly to representation learning.
+        </p>
+
+        <p class="text">
+            In joint embedding architectures, the goal is already to make representations of different views of the same
+            image similar.
+            However, similarity alone is not sufficient, since it can still lead to collapse.
+            Barlow’s idea suggests an additional constraint: reduce redundancy between different dimensions of the
+            representation.
+        </p>
+
+        <p class="text">
+            To measure this redundancy, the outputs of different neurons are compared using <b>cross-correlation</b>.
+            By computing the correlations between all feature dimensions across two augmented views, we obtain a
+            cross-correlation matrix.
+            Ideally:
+        </p>
+
+        <ul class="text">
+            <li>
+                <p class="text">corresponding dimensions should be highly correlated,</p>
+            </li>
+            <li>
+                <p class="text">different dimensions should remain decorrelated.</p>
+            </li>
+        </ul>
+
+        <p class="text">
+            In other words, the cross-correlation matrix should approach the <b>identity matrix</b>.
+            This simple but powerful idea became the foundation of <b>Barlow Twins</b> [4].
+        </p>
+
+        <!-- <h1>
+            Introduction
+        </h1>
+        <p class='text'>
+            The best systems to learn representations of images are not the generative. When you take an image and pass
+            it though an encoder you want to extract as much information of possible. You can take two images of the
+            same scene or you take an image and you corrupted or transform it, you run both through the encoders and the
+            representations you extract they have to be the same, because semanticly they represent the same thing
+            (Siamese neural nets). A system that works in this way are siamese neural nets that was initially created to
+            detect fraudelent signatures. The system works by passing a pair of signature images into to copies of the
+            same neural network. The network copies are not trained to generate any kind of data instead they output
+            vectors of numbers (embedding vectors). These networks were trained into two copies of examples. Positive
+            examples that contain a reference signature and a non-fradaulent signature. so these are by the same
+            person.and negative examples that contain a reference signature and a fraudelent signature. For fraudelent
+            examples the networks copies are trained to produce embedding vectors that are maximally different. And for
+            positive examples produce embedding vectors that are maximally similar. When a new signature comes along we
+            can pass it through our network to compute an embedding vector and compare it to the embedding vector
+            produced from our reference signature. if the resulting embedding vectors are not similar enough the
+            signature is detected as fraudelent. By jointly embedding our signatures learns a very useful internal
+            representaion of the imags of our signatures notably without having to predict or generate any actual
+            signature images.
+        </p>
+        <p class='text'>
+            This joint embedding strategy has a huge problem. Since we train our networks to make the embeddings or our
+            original and corrupted images as similar as possible the network can find a trivial solution where it simply
+            returns the same embedding vector for any input that we pass in. This problems is known as representation
+            collapse. In the original siamese approach, the team used what's now known as contrastive learning to avoid
+            representation collapse giving the network both positive and negative examples. These contrastive methods
+            have been succesfull implemented for both images and videos but they can run into issues when they are
+            scaled up, requiring a large amount of computation and many negative examples to learn meaningful
+            representations.
+        </p>
+
+        <p class="text">
+            "Because of the curse of dimensionality, in the worst case, the number of contrastive examples may grow
+            exponentially with the dimension of the representation. This the main reason why i will argue against
+            contrastive methods." Yann Lecun, A path towards autonomous machine learning
+        </p>
+
+        <p class="text">
+            however using generative models to fully reconstruct images was not a good stategy for self supervised
+            learning. Later a solution came inspired by computetional neuroscience in machine learning and the work of
+            Horus Barlow a computational neuroscientist who hypothetized in 1961 that the neurons in animal visual
+            systems operate by reducing the redundant information between neurons. Steffa Deni's working was familiar
+            with Barlow's work. and proposed that one way to avoid representation collapse could be to apply barlo's
+            idea to the outputs of the networks. In the joint embeddings architectures our embedding vectors are
+            produced by a final layer of artificial neurons in our embeddings network. Given the output of the network
+            in images and their distorted copies the whole point of the joint embedding architecture is to make the
+            embeddings of the same underlying images similar. In a standard joint embedding architecture we will simple
+            measure and maximize the similarity between these two vectors.However as we have seen this aproach is
+            susceptible to representation collapse. But now applying barlos hypothesis we should reduce the redundancy
+            between the outputs of different neurons. To measure the reduduncy between neuron outputs the team computed
+            the cross corralation between these two output vectors.This computation consits of scaling each vector and
+            taking the dot product resulting in a single number the pearson correlation. To reduce the reduduncy between
+            our diffeent neurons as proposed by barlo we want the correlation to beclose to zero. We can compute the
+            cross correlation between all different pairs of neurons in a matrix. So ideally our cross correlation
+            matrix should be like the identity matrix.
+        </p> -->
+
+    </div>
+
+    <div class="container blog main extra-large gray page-content">
+        <img src="assets/figures/barlow_loss21.png"
+            style="max-width: 100%; height: auto; max-height: 400px; object-fit: contain;">
+        <!-- <p class="caption">
+            Overview of the OrthoRF Architecture. The model utilizes an autoencoder with standard scalar-valued weights,
+            while maintaining $n$-dimensional (lifted) vector activations across all layers. Competitive binding is
+            enforced at two stages: first, in the binding mechanism by applying a softmax
+            across rotations; and second, through an orthogonality loss computed as the dot product between rotational
+            vectors.
+        </p> -->
+    </div>
+
+    <div class="container blog main first page-content" id="blog-main">
+
+        <h1>
+            How the Barlow Twins Model Works
+        </h1>
+
+        <p class="text">
+            Barlow Twins learns representations using an encoder network \(f(\cdot)\) that maps an input image to an
+            embedding vector.
+            The encoder consists of a ResNet-50 backbone followed by a projection head composed of three linear layers
+            with 8192 units each.
+            The first two layers are followed by Batch Normalization and ReLU activations.
+        </p>
+
+        <p class="text">
+            During training, we first sample a batch of images \(x\) from the dataset.
+            For each image, we generate two randomly augmented views using a transformation function.
+            These two views are denoted as \(x_1\) and \(x_2\).
+            Both views are passed through the same encoder network to produce the embedding vectors:
+        </p>
+
+        \[
+        z_1 = f(x_1), \qquad z_2 = f(x_2)
+        \]
+
+        <p class="text">
+            The embeddings are then normalized along the batch dimension rather than the feature dimension, which is
+            more commonly used in other representation learning methods.
+        </p>
+
+        <p class="text">
+            The Barlow Twins objective function is defined as:
+        </p>
+
+        \[
+        L_{BT} \triangleq \sum_i (1 - C_{ii})^2 + \lambda \sum_i \sum_{j \neq i} C_{ij}^2
+        \]
+
+        <p class="text">
+            where:
+        </p>
+
+        <ul>
+            <li>
+                <p class="text">
+                    \(\lambda\) is a positive constant that balances the importance of the invariance term and the
+                    redundancy reduction term.
+                </p>
+            </li>
+
+            <li>
+                <p class="text">
+                    \(C\) is the cross-correlation matrix computed between the normalized embeddings \(z_1\) and
+                    \(z_2\).
+                </p>
+            </li>
+        </ul>
+
+        \[
+        C_{ij} \triangleq
+        \frac{\sum_b z^{A}_{b,i} z^{B}_{b,j}}
+        {\sqrt{\sum_b (z^{A}_{b,i})^2}\sqrt{\sum_b (z^{B}_{b,j})^2}}
+        \]
+
+        <ul>
+            <li>
+                <p class="text">
+                    The first term of the loss is the <b>invariance term</b>.
+                    It encourages the diagonal entries of the cross-correlation matrix to be equal to one.
+                    This makes corresponding embedding dimensions from two augmented views highly correlated, ensuring
+                    that the two representations remain similar.
+                </p>
+            </li>
+
+            <li>
+                <p class="text">
+                    The second term is the <b>redundancy reduction term</b>.
+                    It encourages the off-diagonal entries of the cross-correlation matrix to be close to zero.
+                    As a result, different embedding dimensions become decorrelated, reducing redundancy and encouraging
+                    each dimension to capture distinct information.
+                </p>
+            </li>
+        </ul>
+
+
+    </div>
+
+    <!-- <div class="container blog extra-large gray page-content">
+        <h1>Notes: Similarity with the Barlow Twins objective function</h1>
+        <p class="text">
+            Barlow Twins [4] is a self-supervised learning method that learns representations without using labels. It
+            was
+            introduced to reduce the need for common design choices used in earlier self-supervised methods to prevent
+            collapse, such as negative samples, asymmetric updates, stop-gradient operations, or very large batch sizes.
+
+            The objective is to make representations of different augmentations of the same image similar, while also
+            reducing redundancy between feature dimensions. This is achieved by encouraging the cross-correlation matrix
+            of the features to approach the identity matrix.
+
+            \[
+            L_{BT} \triangleq \sum_i (1 - C_{ii})^2 + \lambda \sum_i \sum_{j \neq i} C_{ij}^2
+            \]
+
+            \[
+            C_{ij} \triangleq
+            \frac{\sum_b z^{A}_{b,i} z^{B}_{b,j}}
+            {\sqrt{\sum_b (z^{A}_{b,i})^2}\sqrt{\sum_b (z^{B}_{b,j})^2}}
+            \]
+            The first term of the loss is the invariance term. It encourages the diagonal entries of the
+            cross-correlation matrix to be equal to one. This means that corresponding embedding components from two
+            distorted views of the same image become highly correlated, making the two representations similar.
+
+            The second term is the redundancy reduction term. It encourages the off-diagonal entries of the
+            cross-correlation matrix to be zero. This means that different embedding dimensions become decorrelated,
+            reducing redundancy between components of the representation.
+        </p>
+        <p class="text">
+
+            The OrthoRF orthogonality loss is related to the redundancy reduction term of Barlow Twins. However, instead
+            of using a normalized cross-correlation matrix between two augmented views, OrthoRF uses an unnormalized
+            Gram matrix between latent orientation components. We penalize only the off-diagonal entries of this matrix,
+            encouraging different latent vectors to have near-zero inner product.
+
+            Since the vectors are centered before computing the Gram matrix, driving these off-diagonal entries toward
+            zero promotes decorrelation between components. Geometrically, a near-zero inner product also encourages
+            orthogonality between the latent orientation vectors.
+        </p>
+    </div> -->
+
+    <div class="container blog extra-large gray page-content">
+        <div class="slide-menu">
+            <ul class="dots" id="slide-menu">
+                <li class="dot active"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+                <li class="dot"></li>
+            </ul>
+        </div>
+
+        <div class="slide-content" , style="display: block;">
+            <img src="assets/figures/results_barlow/imagenet.png"
+                style="max-width: 100%; height: auto; max-height: 500px; object-fit: contain;">
+            <!-- <p class="caption">
+                Qualitative OrthoRF results on 4Shapes dataset, after thresholding $\psi_{\text{final}}$. Objects occupy
+                distinct dimensions, and occluded parts are recovered.
+            </p> -->
+        </div>
+
+        <div class="slide-content" , style="display: none;">
+            <img src="assets/figures/results_barlow/batchsize.png"
+                style="max-width: 100%; height: auto; max-height: 500px; object-fit: contain;">
+        </div>
+
+        <div class="slide-content" , style="display: none;">
+            <img src="assets/figures/results_barlow/dimensionality.png"
+                style="max-width: 100%; height: auto; max-height: 400px; object-fit: contain;">
+        </div>
+
+        <div class="slide-content" , style="display: none;">
+            <img src="assets/figures/results_barlow/aug.png"
+                style="max-width: 100%; height: auto; max-height: 400px; object-fit: contain;">
+        </div>
+    </div>
+
+    <div class="container blog main page-content">
+        <h1>Results</h1>
+
+        <h2>Linear Evaluation on ImageNet</h2>
+        <p class="text">
+            Barlow Twins achieves a top-1 accuracy of 73.2% under linear evaluation on ImageNet,
+            making it competitive with state-of-the-art methods.
+        </p>
+
+        <h2>Robustness to Batch Size</h2>
+        <p class="text">
+            Unlike many visual representation learning methods that rely on very large batch sizes,
+            Barlow Twins remains effective even with smaller batches, such as a batch size of 128.
+            This suggests that the method is less dependent on large-scale batch statistics than contrastive approaches.
+        </p>
+
+        <h2>Projector Network Depth and Width</h2>
+        <p class="text">
+            Barlow Twins benefits from a high-dimensional projector network.
+            In contrast to methods such as SimCLR and BYOL, where performance can saturate as dimensionality increases,
+            Barlow Twins continues to improve with wider projection heads.
+            This highlights the importance of high-dimensional embeddings for redundancy reduction.
+        </p>
+
+        <h2>Effect of Removing Augmentations</h2>
+        <p class="text">
+            The method is sensitive to the choice of data augmentations.
+            Removing certain augmentations leads to a drop in performance, showing that strong and diverse augmentations
+            remain important for learning robust representations.
+        </p>
+    </div>
+
+
+    <div class="container blog main page-content">
+        <h1>Conclusion</h1>
+
+        <p class="text">
+            Barlow Twins provides a simple yet powerful approach to self-supervised representation learning.
+            Instead of relying on negative samples or asymmetric training tricks, such as stop-gradient operations,
+            momentum encoders, or predictor networks, it learns useful embeddings by making
+            augmented views of the same image similar while reducing redundancy between feature dimensions.
+        </p>
+
+        <p class="text">
+            Its main idea—pushing the cross-correlation matrix toward the identity—encourages representations that are
+            both invariant and decorrelated.
+            This makes Barlow Twins an important contribution to representation learning and a useful source of
+            inspiration for later methods, including approaches for world models, where learning compact, structured,
+            and non-redundant representations is essential for prediction, planning, and reasoning.
+        </p>
+    </div>
+
+    <div class="container blog main page-content">
+        <h1>References</h1>
+        <p class="text">
+            [1] Bromley, J., Guyon, I., LeCun, Y., Säckinger, E., & Shah, R. (1993). Signature verification using a"
+            siamese" time delay neural network. Advances in neural information processing systems, 6.
+        </p>
+        <p class="text">
+            [2] LeCun, Y. (2022). A path towards autonomous machine intelligence version 0.9. 2, 2022-06-27. Open
+            Review, 62(1), 1-62.
+        </p>
+        <p class="text">
+            [3] Barlow, H. B. (1961). Possible principles underlying the transformation of sensory messages. Sensory
+            communication, 1(01), 217-233.
+        </p>
+        <p class="text">
+            [4] Zbontar, J., Jing, L., Misra, I., LeCun, Y., & Deny, S. (2021, July). Barlow twins: Self-supervised
+            learning via redundancy reduction. In International conference on machine learning (pp. 12310-12320). PMLR.
+        </p>
+    </div>
+
+    <!-- Footer Page -->
+    <footer>
+        <div class="container">
+            <p>
+                This website is built on the <a href="https://shikun.io/projects/clarity">Clarity Template</a>, designed
+                by <a href="https://shikun.io/">Shikun Liu</a>.
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="clarity/clarity.js"></script>
+    <script src="assets/scripts/main.js"></script>
+
+</body>
+
+</html>

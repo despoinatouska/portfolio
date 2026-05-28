@@ -197,7 +197,7 @@
 
         <ul>
             <li>
-                <p class="text"><strong>Competition in the Binding Mechanism:</strong> The binding mechanism [3] is
+                <p class="text"><b>Competition in the Binding Mechanism:</b> The binding mechanism [3] is
                     essential for object-centric representations, as it prevents destructive interference from
                     suppressing object signals in the final output. We introduce competition by applying a SoftMax
                     across rotations at every layer, encouraging clearer assignment of features to distinct object
@@ -205,7 +205,7 @@
                 </p>
             </li>
             <li>
-                <p class="text"><strong>The Orthogonality Loss:</strong> The network mathematically reinforces this
+                <p class="text"><b>The Orthogonality Loss:</b> The network mathematically reinforces this
                     competition using a
                     structural penalty, calculated as the unormalized dot product between the rotational vectors at the
                     encoder output, to
@@ -313,7 +313,8 @@
 
             The second term is the redundancy reduction term. It encourages the off-diagonal entries of the
             cross-correlation matrix to be zero. This means that different embedding dimensions become decorrelated,
-            reducing redundancy between components of the representation.
+            reducing redundancy between components of the representation. For more background, see my blog post on
+            <a href="barlow.html">Barlow Twins</a> model.
         </p>
         <p class="text">
 

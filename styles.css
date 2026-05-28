@@ -303,7 +303,7 @@ canvas {
     grid-template-columns: 2fr 1fr;
     gap: 18px;
     align-items: stretch;
-    transition: grid-template-columns 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-columns 1.0s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .feature-row:has(.blog-panel:hover) {
@@ -489,7 +489,7 @@ canvas {
 .blog-slide {
     display: none;
     flex: 1;
-    margin-top: 58px;
+    margin-top: 50px;
     padding: 0 46px;
     opacity: 0;
     visibility: hidden;

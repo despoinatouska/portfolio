@@ -339,14 +339,14 @@
                         <div class="blog-slide-content">
 
                             <h3 class="feature-title blog-post-title">
-                                OrthoRF: Orthogonality in Object-Centric Representations
+                                Orthogonality as an Inductive Bias for Object-Centric Learning
                             </h3>
                             <div class="blog-date">April 2026</div>
 
                             <p class="blog-notes feature-secondary">
                                 Notes on rotating features, object-centric learning, and how orthogonal latent
                                 directions can help
-                                separate visual entities in crowded or overlapping scenes.
+                                separate visual entities in overlapping scenes and recover occluded object parts.
                             </p>
 
                             <div class="blog-label-row">
@@ -359,14 +359,37 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="blog-slide" id="blog-slide-2">
+                        <div class="blog-slide-content">
+
+                            <h3 class="feature-title blog-post-title">
+                                Understanding Barlow Twins: Similarity and Redundancy Reduction in SSL
+                            </h3>
+                            <div class="blog-date">May 2026</div>
+
+                            <p class="blog-notes feature-secondary">
+                                Barlow Twins learns representations without labels by encouraging two augmented views of
+                                the same image to produce similar embeddings. At the same time, it reduces redundancy
+                                between feature dimensions by pushing the cross-correlation matrix of the
+                                representations toward the identity matrix.
+
+                            </p>
+
+                            <div class="blog-label-row">
+                                <span class="blog-label">SSL</span>
+                                <!-- <span class="blog-label"></span> -->
+
+                                <a href="barlow.html" class="pub-link-btn blog-read-link">
+                                    Read ↗
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
-
-            <!-- <div class="blog-dots-container" aria-label="Blog navigation">
-                <button class="blog-dot active" onclick="showBlogSlide(1, event)"
-                    aria-label="Show blog post 1"></button>
-            </div> -->
         </section>
-
     </div>
 
     <footer class="site-footer">
@@ -381,7 +404,7 @@
 
     <script>
         let currentBlogSlide = 1;
-        const totalBlogSlides = 1; // Change to 2, 3, etc. when you add more posts.
+        const totalBlogSlides = 2; // Change to 2, 3, etc. when you add more posts.
         let blogInterval;
 
         function showBlogSlide(index, e) {
@@ -427,7 +450,7 @@
 
         function startBlogSlider() {
             if (totalBlogSlides <= 1) return;
-            blogInterval = setInterval(nextBlogSlide, 5000);
+            blogInterval = setInterval(nextBlogSlide, 20000);
         }
 
         loader.addEventListener("click", () => {
@@ -436,54 +459,6 @@
     </script>
 
     <script>
-        // --- 1. Weather Logic (Open-Meteo) ---
-        // async function updateAllWeather() {
-        //     const locations = [
-        //         { id: 'ams', lat: 52.3676, lon: 4.9041 },
-        //         { id: 'thess', lat: 40.6401, lon: 22.9444 }
-        //     ];
-        //     for (const loc of locations) {
-        //         try {
-        //             const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current_weather=true`);
-        //             const data = await response.json();
-        //             document.getElementById(`${loc.id}-temp`).innerText = `${Math.round(data.current_weather.temperature)}°C`;
-        //             document.getElementById(`${loc.id}-desc`).innerText = getWeatherText(data.current_weather.weathercode);
-        //         } catch (err) { console.error(err); }
-        //     }
-        // }
-
-        // function getWeatherText(code) {
-        //     const codes = { 0: "Clear", 1: "Fair", 2: "Cloudy", 3: "Overcast", 61: "Rain" };
-        //     return codes[code] || "Cloudy";
-        // }
-
-        // --- 2. Clock Logic ---
-        // function updateClocks() {
-        //     const amsOptions = { timeZone: 'Europe/Amsterdam', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        //     const thessOptions = { timeZone: 'Europe/Athens', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-
-        //     document.getElementById('ams-time').innerText = new Intl.DateTimeFormat('en-GB', amsOptions).format(new Date());
-        //     document.getElementById('thess-time').innerText = new Intl.DateTimeFormat('en-GB', thessOptions).format(new Date());
-        // }
-
-        // --- 3. Slider Logic ---
-        // let autoSlide = setInterval(toggleGadget, 5000);
-
-        // function toggleGadget() {
-        //     document.getElementById('slide-1').classList.toggle('active');
-        //     document.getElementById('slide-2').classList.toggle('active');
-        // }
-
-        // function manualToggle() {
-        //     clearInterval(autoSlide);
-        //     toggleGadget();
-        //     autoSlide = setInterval(toggleGadget, 5000);
-        // }
-
-        // updateAllWeather();
-        // setInterval(updateClocks, 1000);
-        // updateClocks();
-
         document.addEventListener("mouseenter", () => {
             cursorDot.style.opacity = "1";
             cursorOutline.style.opacity = "0.3";
@@ -528,50 +503,23 @@
         });
 
         let currentPub = 1;
-        const totalPubs = 5;
-        let pubInterval; // We need a variable to store the timer ID
 
         function showPub(index, e) {
-            // 1. Update the global tracking variable to the clicked index
             currentPub = index;
 
-            // 2. Update Content
             document.querySelectorAll('.pub-content').forEach(content => {
                 content.classList.remove('active');
             });
+
             const selectedPub = document.getElementById('pub' + index);
             if (selectedPub) {
                 selectedPub.classList.add('active');
             }
 
-            // 3. Update Dots (Handled cleanly here instead of inside the interval)
             document.querySelectorAll('.pub-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === index - 1);
             });
-
-            // 4. If the user clicked manually (e exists), reset the automatic timer
-            if (e) {
-                clearInterval(pubInterval);
-                startPubSlider();
-            }
         }
-
-        // Function to handle the automatic sliding
-        function nextPub() {
-            let nextIndex = currentPub % totalPubs + 1;
-            showPub(nextIndex); // No event passed, so it won't trigger the reset loop
-        }
-
-        // Function to start the interval
-        function startPubSlider() {
-            pubInterval = setInterval(nextPub, 4000);
-        }
-
-        // Start the slider when the script loads
-        // Listen for the click on the loader to start the slider
-        loader.addEventListener("click", () => {
-            startPubSlider();
-        });
     </script>
     <script type="module" src="./src/main.js"></script>
     <script>
