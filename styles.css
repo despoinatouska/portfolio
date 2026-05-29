@@ -303,7 +303,7 @@ canvas {
     grid-template-columns: 2fr 1fr;
     gap: 18px;
     align-items: stretch;
-    transition: grid-template-columns 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-columns 1.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .feature-row:has(.blog-panel:hover) {
@@ -633,9 +633,12 @@ canvas {
     display: block;
 }
 
-.feature-row:has(.blog-panel:hover) .publications-panel .feature-secondary,
-.feature-row:has(.blog-panel:hover) .publications-panel .pub-extra-link {
+.feature-row:has(.blog-panel:hover) .publications-panel .feature-secondary {
     display: none;
+}
+
+.feature-row:has(.blog-panel:hover) .publications-panel .pub-extra-link {
+    display: inline-flex;
 }
 
 .feature-row:not(:has(.blog-panel:hover)) .blog-panel .blog-slide {
