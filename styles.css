@@ -961,13 +961,9 @@ button,
         padding: 12px 18px;
     }
 
-    .blog-slide.active {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
-    .feature-row .blog-panel .blog-slide.active .blog-notes {
+    .feature-row .blog-panel .blog-notes,
+    .feature-row:not(:has(.blog-panel:hover)) .blog-panel .blog-notes,
+    .feature-row:has(.blog-panel:hover) .blog-panel .blog-notes {
         opacity: 1 !important;
         visibility: visible !important;
         max-height: none !important;
