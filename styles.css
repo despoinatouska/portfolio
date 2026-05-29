@@ -961,12 +961,21 @@ button,
         padding: 12px 18px;
     }
 
-    .blog-notes {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-        max-height: none;
-        overflow: visible;
+    .blog-slide.active {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .feature-row .blog-panel .blog-slide.active .blog-notes {
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: none !important;
+        margin-bottom: 18px !important;
+        overflow: visible !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        transition: none !important;
     }
 }
 
