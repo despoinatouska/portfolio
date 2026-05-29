@@ -238,13 +238,6 @@ svg {
 }
 
 @media screen and (max-width: 769px) {
-  .blog-cover .foreground {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-}
-
-@media screen and (max-width: 769px) {
 
   a,
   p,
@@ -683,7 +676,7 @@ div.container.blog#first-content div.blog-title .blog-cover {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 2vh 0;
 }
 
@@ -691,6 +684,34 @@ div.container.blog#first-content div.blog-title .blog-cover img.foreground {
   position: relative;
   z-index: 2;
   padding: 0 !important;
+  width: 150%;
+  max-width: none;
+  height: auto;
+  display: block;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  div.container.blog#first-content div.blog-title .blog-cover img.foreground {
+    width: 120%;
+    max-width: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  div.container.blog#first-content div.blog-title .blog-cover img.foreground {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+  div.container.blog#first-content div.blog-title .blog-cover img.foreground {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 div.container.blog#first-content div.blog-title .blog-cover img.background {
