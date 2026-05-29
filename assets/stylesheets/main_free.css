@@ -1789,19 +1789,7 @@ li {
   line-height: 1.5;
 }
 
-.blog-cover {
-  width: 130%;
-  max-width: none;
-  /* margin-left: 50%; */
-  /* transform: translateX(-80%); */
-}
 
-.blog-cover .foreground {
-  width: 150%;
-  height: auto;
-  display: block;
-  transform: translateX(15%);
-}
 
 @media (max-width: 768px) {
   .blog-cover {
