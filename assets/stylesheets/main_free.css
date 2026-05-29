@@ -238,6 +238,13 @@ svg {
 }
 
 @media screen and (max-width: 769px) {
+  .blog-cover .foreground {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 769px) {
 
   a,
   p,
@@ -1789,21 +1796,6 @@ li {
   line-height: 1.5;
 }
 
-
-
-@media (max-width: 768px) {
-  .blog-cover {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    transform: none;
-  }
-
-  .blog-cover .foreground {
-    width: 100%;
-    max-width: 100%;
-  }
-}
 
 @media screen and (max-width: 769px) {
 
