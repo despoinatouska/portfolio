@@ -9,6 +9,60 @@
     --green: #02f758;
     --radius: 20px;
     --feature-card-height: 340px;
+
+    /* Theme colours (light) */
+    --nav-muted: #888;
+    /* header subtitles, footer */
+    --body-text: #444;
+    /* About Me paragraphs */
+    --item-title: #222;
+    /* experience job titles */
+    --pill-bg: #fff;
+    /* "My Experience", "Blog"... title pills */
+    --pill-border: #eee;
+    --scrollbar: #ddd;
+    --dot: #d3d3d3;
+    /* inactive carousel bullets */
+    --chip-bg: #000;
+    /* blog labels (CV, SSL...) */
+    --chip-text: #fff;
+    --on-accent: #0b0b0b;
+    /* text/icons on magenta hover backgrounds */
+
+    /* Cards: surface (colour or gradient), outline, offset shadow, inner highlight */
+    --card-surface: var(--card);
+    --card-border: var(--text);
+    --card-shadow: var(--text);
+    --card-inset: 0 0 0 transparent;
+    color-scheme: light;
+}
+
+/* Dark mode ("muted outline"): near-black page, slightly lighter flat cards,
+   mid-grey outlines and a soft grey offset shadow, so the outlined card style
+   stays but with low contrast. */
+:root[data-theme="dark"] {
+    --bg: #18181c;
+    --card: #222228;
+    --card-border: #4a4a55;
+    /*previous card border choice #6b6b78*/
+    /* mid-grey outline */
+    --card-shadow: #4a4a55;
+    /* soft grey offset shadow */
+    --text: #ececf1;
+    --muted: #a1a1ab;
+    --nav-muted: #8d8d96;
+    --body-text: #c9c9d2;
+    --item-title: #ececf1;
+    --pill-bg: #2c2c34;
+    --pill-border: #3c3c46;
+    --scrollbar: #4a4a54;
+    --dot: #55555f;
+    --chip-bg: #ececf1;
+    --chip-text: #18181c;
+    --on-accent: #0b0b0b;
+    --cursor-button-bg: rgba(218, 2, 125, 0.85);
+    /* "Read" pill stays bright on dark cards */
+    color-scheme: dark;
 }
 
 /* ================= BASE ================= */
@@ -106,7 +160,7 @@ canvas {
 }
 
 .nav-secondary {
-    color: #888;
+    color: var(--nav-muted);
     font-weight: 400;
     white-space: nowrap;
 }
@@ -122,13 +176,88 @@ canvas {
     transition: color 0.2s ease;
 }
 
+/* Contact links (CV, IN, email) take the cursor's magenta on hover; the cursor hides */
 .nav-secondary.links a:hover {
-    color: var(--text);
+    color: var(--cursor-color, rgb(218, 2, 125));
+    font-weight: 600;
+    /* monospace font: bold is the same width, so nothing shifts */
+}
+
+/* Narrow screens: "Copied!" is shown on top of the links (no layout jump) */
+.nav-secondary.links {
+    position: relative;
+}
+
+.nav-secondary.links[data-message]::after {
+    content: attr(data-message);
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    color: var(--cursor-color, rgb(218, 2, 125));
+    white-space: nowrap;
+}
+
+/* With a mouse, reserve room for "Copy email" so the header doesn't shift on hover
+   (skipped on very narrow windows so name and contact can stay on one line) */
+@media (hover: hover) and (min-width: 480px) {
+    .nav-contact .nav-secondary.links {
+        min-width: calc(15 * (1ch + 0.05em) + 24px + 4px);
+    }
 }
 
 .nav-location,
 #header-time {
     text-align: right;
+}
+
+/* ---- Dark mode button (top-right of the header) ---- */
+.nav-theme {
+    align-items: flex-end;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    /* fixed width so "Dark mode" / "Light mode" don't shift the header */
+    min-width: calc(12 * (1ch + 0.05em) + 26px);
+    margin: 0;
+    padding: 1px 10px;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--text);
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    letter-spacing: inherit;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: none;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Like the other buttons: magenta under the (hidden) cursor, black text */
+.theme-toggle:hover {
+    background: var(--cursor-color);
+    color: var(--on-accent);
+    border-color: var(--on-accent);
+}
+
+.theme-toggle-icon {
+    font-size: 1.05em;
+    line-height: 1;
+}
+
+/* Smooth fade between light and dark */
+body,
+.card,
+.timeline-title-ellipse,
+.blog-nav,
+.blog-label,
+.pub-link-btn {
+    transition-property: background-color, color, border-color, box-shadow, transform;
+    transition-duration: 0.3s;
 }
 
 #header-time {
@@ -153,10 +282,10 @@ canvas {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--card);
-    border: 1.5px solid var(--text);
+    background: var(--card-surface);
+    border: 1.5px solid var(--card-border);
     border-radius: var(--radius);
-    box-shadow: 5px 5px 0 var(--text);
+    box-shadow: 5px 5px 0 var(--card-shadow), var(--card-inset);
     transition:
         transform 0.18s ease,
         box-shadow 0.18s ease,
@@ -165,7 +294,7 @@ canvas {
 
 .card:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 7px 7px 0 var(--text);
+    box-shadow: 7px 7px 0 var(--card-shadow), var(--card-inset);
 }
 
 .card h2,
@@ -195,8 +324,8 @@ canvas {
 .timeline-title-ellipse {
     display: inline-block;
     padding: 8px 18px;
-    background: #fff;
-    border: 1px solid #eee;
+    background: var(--pill-bg);
+    border: 1px solid var(--pill-border);
     border-radius: 999px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     font-size: 18px;
@@ -209,7 +338,7 @@ canvas {
     overflow-y: auto;
     padding: 40px 10px 10px 40px;
     scrollbar-width: thin;
-    scrollbar-color: #ddd transparent;
+    scrollbar-color: var(--scrollbar) transparent;
     -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.2) 30px, rgba(0, 0, 0, 1) 80px, rgba(0, 0, 0, 1) 100%);
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 1) 60px, rgba(0, 0, 0, 1) calc(100% - 40px), rgba(0, 0, 0, 0) 100%);
 }
@@ -219,7 +348,7 @@ canvas {
 }
 
 .timeline-content::-webkit-scrollbar-thumb {
-    background: #ddd;
+    background: var(--scrollbar);
     border-radius: 999px;
 }
 
@@ -235,7 +364,7 @@ canvas {
     left: -20px;
     z-index: 1;
     width: 2px;
-    background: #111;
+    background: var(--text);
     opacity: 0.15;
 }
 
@@ -251,7 +380,7 @@ canvas {
     z-index: 3;
     width: 10px;
     height: 10px;
-    background: #000;
+    background: var(--text);
     border-radius: 50%;
 }
 
@@ -261,7 +390,7 @@ canvas {
 }
 
 .item-title {
-    color: #222;
+    color: var(--item-title);
     font-size: 16px;
     font-weight: 600;
 }
@@ -283,7 +412,7 @@ canvas {
     flex: 1 1 auto;
     max-width: 100%;
     padding-top: 50px;
-    color: #444;
+    color: var(--body-text);
     font-size: 17px;
     line-height: 1.6;
     overflow-wrap: break-word;
@@ -303,7 +432,8 @@ canvas {
     grid-template-columns: 2fr 1fr;
     gap: 18px;
     align-items: stretch;
-    transition: grid-template-columns 1.45s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Gentle ease-in-out so the panels grow/shrink smoothly instead of jumping */
+    transition: grid-template-columns 1.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .feature-row:has(.blog-panel:hover) {
@@ -335,8 +465,8 @@ canvas {
     font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: clamp(19px, 1.45vw, 25px);
     line-height: 1.2;
-    font-weight: 800;
-    letter-spacing: -0.035em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     text-transform: none;
 }
 
@@ -350,17 +480,18 @@ canvas {
     justify-content: space-between;
 }
 
+/* All publications are stacked in one grid cell, so the area is always as tall
+   as the longest one and nothing (e.g. the Project Page button) gets cut off. */
 .pub-display-area {
     position: relative;
-    flex: 1;
-    min-height: 0;
+    flex: 1 0 auto;
+    display: grid;
     margin-top: 50px;
-    overflow: hidden;
 }
 
 .pub-content {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
     padding-right: 6px;
     opacity: 0;
     visibility: hidden;
@@ -372,12 +503,13 @@ canvas {
     visibility: visible;
 }
 
+/* Same text style as the blog description (.blog-notes) */
 .pub-authors {
     margin: 0 0 14px;
     color: var(--muted);
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 1.45;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.5;
 }
 
 .pub-description {
@@ -418,8 +550,8 @@ canvas {
     justify-content: center;
     width: fit-content;
     padding: 6px 14px;
-    color: #111;
-    border: 1px solid #111;
+    color: var(--text);
+    border: 1px solid var(--text);
     border-radius: 999px;
     font-size: 12px;
     font-weight: 700;
@@ -431,9 +563,12 @@ canvas {
     transition: all 0.3s ease;
 }
 
-.pub-link-btn:hover {
-    background: #111;
-    color: #fff;
+/* Button hover: takes the cursor's magenta (the cursor itself hides), black text */
+.pub-link-btn:hover,
+.card .pub-link-btn:hover {
+    background: var(--cursor-color);
+    color: var(--on-accent);
+    border-color: var(--on-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -456,22 +591,39 @@ canvas {
     width: 12px;
     height: 12px;
     padding: 0;
-    background: #d3d3d3;
+    background: var(--dot);
     border: none;
     border-radius: 50%;
     cursor: none;
     transition: transform 0.3s ease, background 0.3s ease, opacity 0.3s ease;
 }
 
+/* Slightly larger invisible hover area around each bullet */
+.pub-dot,
+.blog-dot {
+    position: relative;
+}
+
+.pub-dot::before,
+.blog-dot::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+}
+
+/* Carousel bullets turn pink under the (hidden) cursor */
 .pub-dot:hover,
-.blog-dot:hover {
-    background: #999;
+.blog-dot:hover,
+.pub-dot.active:hover,
+.blog-dot.active:hover {
+    background: var(--cursor-color);
     transform: scale(1.25);
 }
 
 .pub-dot.active,
 .blog-dot.active {
-    background: #000;
+    background: var(--text);
     transform: scale(1.2);
 }
 
@@ -527,10 +679,11 @@ canvas {
     line-height: 1.5;
 }
 
+/* Labels and the Read button always share one line */
 .blog-label-row {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     margin-top: auto;
     margin-bottom: 0;
@@ -542,8 +695,8 @@ canvas {
     justify-content: center;
     width: fit-content;
     padding: 6px 14px;
-    background: #000;
-    color: #fff;
+    background: var(--chip-bg);
+    color: var(--chip-text);
     border-radius: 999px;
     font-family: "IBM Plex Mono", monospace;
     font-size: 11px;
@@ -554,7 +707,17 @@ canvas {
 }
 
 .blog-read-link {
+    flex-shrink: 0;
     margin-left: auto;
+}
+
+/* Wherever the blog block animates on hover (non-mobile widths), the cursor
+   itself becomes the "Read" button and the whole block is clickable, so the
+   separate Read button is hidden. */
+@media (min-width: 981px) {
+    .blog-read-link {
+        display: none;
+    }
 }
 
 .blog-nav {
@@ -566,20 +729,23 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fff;
-    border: 1.5px solid var(--text);
+    background: var(--card-surface);
+    color: var(--text);
+    border: 1.5px solid var(--card-border);
     border-radius: 50%;
-    box-shadow: 3px 3px 0 var(--text);
+    box-shadow: 3px 3px 0 var(--card-shadow);
     cursor: none;
     transform: translateY(-50%);
     transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
 
+/* Arrow hover: takes the cursor's magenta (the cursor itself hides), black arrow;
+   the shadow uses the card shadow colour (black in light mode, soft grey in dark) */
 .blog-nav:hover {
-    background: var(--text);
-    color: var(--bg);
+    background: var(--cursor-color);
+    color: var(--on-accent);
     transform: translate(-2px, calc(-50% - 2px));
-    box-shadow: 5px 5px 0 var(--text);
+    box-shadow: 5px 5px 0 var(--card-shadow);
 }
 
 .blog-nav-left {
@@ -613,8 +779,8 @@ canvas {
 .feature-row:has(.blog-panel:hover) .blog-panel .blog-notes {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0.2s;
-    /* Waits for the panel to expand before fading in */
+    transition-delay: 0s;
+    /* Shown right away; a script reveals more lines as the panel widens */
 }
 
 /* --------------------------------------------------- */
@@ -641,18 +807,11 @@ canvas {
     display: inline-flex;
 }
 
-.feature-row:not(:has(.blog-panel:hover)) .blog-panel .blog-slide {
-    padding: 0 34px;
-}
-
 .feature-row:has(.blog-panel:hover) .publications-panel .pub-display-area {
     margin-top: 48px;
 }
 
-.feature-row:has(.blog-panel:hover) .publications-panel .pub-title,
-.feature-row:not(:has(.blog-panel:hover)) .blog-panel .blog-post-title {
-    font-size: clamp(20px, 1.2vw, 28px);
-}
+/* (Publication and blog titles share one style and keep it in every state) */
 
 /* ================= RESUME BUTTON ================= */
 
@@ -729,31 +888,97 @@ canvas {
 
 /* ================= CUSTOM CURSOR ================= */
 
-.cursor-dot,
-.cursor-outline {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    pointer-events: none;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease-in-out, transform 0.1s ease-out;
+/* Magenta dot: 16px normally, 32px and half-transparent over links/buttons,
+   and a round "Read ↗" button over the blog block. */
+:root {
+    --cursor-color: rgb(218, 2, 125);
+    --cursor-color-soft: rgba(218, 2, 125, 0.5);
+    --cursor-button-border: #D54296;
+    --cursor-button-bg: rgba(218, 2, 125, 0.55);
+    --cursor-button-blur: blur(8px);
+    --cursor-speed: 300ms;
+    --cursor-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .cursor-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--text);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    pointer-events: none;
+    background: var(--cursor-color);
+    border: 0.5px solid var(--cursor-color);
+    border-radius: 25px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    transform: translate(-50%, -50%);
+    transition:
+        width var(--cursor-speed) var(--cursor-ease),
+        height var(--cursor-speed) var(--cursor-ease),
+        background var(--cursor-speed) ease,
+        border-color var(--cursor-speed) ease,
+        box-shadow var(--cursor-speed) ease,
+        opacity 0.3s ease-in-out;
 }
 
-.cursor-outline {
-    width: 10px;
-    height: 10px;
-    background-color: var(--text);
-    border: none;
-    opacity: 0.5;
-    filter: blur(1px);
+/* Hidden over the blog arrows (they turn magenta instead) */
+.cursor-dot.is-hidden {
+    opacity: 0 !important;
+}
+
+/* Over links and buttons */
+.cursor-dot.is-active {
+    width: 32px;
+    height: 32px;
+    background: var(--cursor-color-soft);
+}
+
+/* Over the blog block: becomes a "Read" button */
+.cursor-dot .cursor-label {
+    color: #fff;
+    font-family: "Albert Sans", Inter, system-ui, sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Button state: frosted magenta pill with a thin border and no shadow */
+.cursor-dot.is-label {
+    width: 96px;
+    height: 40px;
+    background: var(--cursor-button-bg);
+    border-color: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: var(--cursor-button-blur);
+    backdrop-filter: var(--cursor-button-blur);
+}
+
+.cursor-dot.is-label .cursor-label {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.05s;
+}
+
+/* Touch screens have no mouse: hide the custom cursor */
+@media (hover: none) {
+    .cursor-dot {
+        display: none;
+    }
+}
+
+/* The whole blog block is clickable (opens the post) */
+.blog-panel .blog-slide {
+    cursor: none;
 }
 
 a,
@@ -793,13 +1018,21 @@ button,
         text-align: left;
     }
 
+    /* One column: every block is full width, heights follow content */
     .grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: minmax(0, 1fr);
         gap: 16px;
     }
 
-    .card.about-me {
-        grid-column: span 2;
+    .card.about-me,
+    .card.timeline,
+    .feature-row {
+        grid-column: 1 / -1;
+    }
+
+    .feature-row .blog-panel .blog-notes {
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .feature-row,
@@ -829,29 +1062,66 @@ button,
 
 /* ================= RESPONSIVE: MOBILE ================= */
 
-@media (max-width: 640px) {
+/* Applies to phones AND narrow desktop windows: anything below the desktop layout */
+@media (max-width: 980px) {
     .container {
         padding: 14px;
     }
 
+    /* Name and Contact share one line when there is room; Contact wraps below otherwise */
     .sleek-nav {
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem 12px;
         padding: 16px;
         margin-bottom: 2rem;
         font-size: 13px;
     }
 
     .nav-col {
-        width: 100%;
+        width: auto;
     }
 
     .hide-on-mobile {
         display: none;
     }
 
+    /* Theme button becomes just a ☾ / ☀ symbol in the top-right corner, on the
+       "CONTACT" line (it takes no extra width, so name + contact still fit) */
+    .sleek-nav {
+        position: relative;
+    }
+
+    .nav-theme {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .theme-toggle,
+    .theme-toggle:hover {
+        min-width: 0;
+        padding: 0;
+        background: none;
+        border: none;
+        line-height: 1.35;
+    }
+
+    .theme-toggle:hover {
+        color: var(--cursor-color);
+    }
+
+    .theme-toggle-icon {
+        font-size: 16px;
+    }
+
+    .theme-toggle-text {
+        display: none;
+    }
+
     .nav-secondary.links {
-        gap: 14px;
+        gap: 10px;
     }
 
     .grid {
@@ -874,7 +1144,7 @@ button,
 
     .card:hover {
         transform: none;
-        box-shadow: 5px 5px 0 var(--text);
+        box-shadow: 5px 5px 0 var(--card-shadow), var(--card-inset);
     }
 
     .card.timeline {
@@ -937,11 +1207,20 @@ button,
         font-size: 12px;
     }
 
+    /* Mobile: Read button sits in the bottom-right corner of the blog block,
+       on the same line as the labels */
     .blog-label-row {
-        align-items: flex-start;
+        align-items: center;
+        min-height: 28px;
+        padding-right: 56px;
+        /* keep labels clear of the Read button */
     }
 
     .blog-read-link {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        min-height: 28px;
         margin-left: 0;
     }
 
@@ -980,7 +1259,7 @@ button,
 .site-footer {
     width: 100%;
     padding: 16px 20px 20px;
-    color: #888;
+    color: var(--nav-muted);
     font-family: "IBM Plex Mono", monospace;
     font-size: 12px;
     line-height: 1.5;
@@ -1001,4 +1280,111 @@ button,
 
 .site-footer a:hover {
     color: var(--text);
+}
+
+/* ================= DESKTOP: SINGLE SCREEN, NO SCROLL ================= */
+/* Header on top, cards centred vertically, footer pinned to the bottom.
+   Card rows scale with the viewport height so everything fits. */
+
+@media (min-width: 981px) and (min-height: 600px) {
+    :root {
+        /* Top row sizes to the About Me text; the feature row has a fixed height.
+           The whole block is then zoomed to fit the screen (see fitGrid in index.html). */
+        --feature-card-height: 340px;
+    }
+
+    /* Bottom cards have a fixed height that never changes during the hover
+       animation; their text adapts to the space instead (see fitFeatureText). */
+    .publications-panel,
+    .blog-slider-card {
+        height: var(--feature-card-height);
+        min-height: var(--feature-card-height);
+        contain: size;
+    }
+
+    .pub-display-area {
+        flex: 1 1 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    /* Authors show only as many whole lines as fit, so the Project Page button is
+       never pushed out and the authors reappear gradually as the panel widens */
+    .feature-row:not(:has(.blog-panel:hover)) .publications-panel .pub-authors {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        max-height: 0;
+        /* until the script sets how many lines fit */
+    }
+
+    /* Slide content is held to the card height, so nothing gets pushed out */
+    .blog-slide,
+    .blog-slide-content {
+        min-height: 0;
+    }
+
+    /* Notes show only as many whole lines as fit (set by fitBlogNotes in index.html),
+       so words appear gradually while the panel grows, ending in "…" if cut */
+    .feature-row:has(.blog-panel:hover) .blog-panel .blog-notes {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        flex: 0 0 auto;
+        overflow: hidden;
+        max-height: 0;
+        /* until the script sets how many lines fit */
+    }
+
+    body {
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .sleek-nav {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+    }
+
+    .container {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-block: 0;
+        zoom: var(--fit-zoom, 1);
+    }
+
+    .grid {
+        margin-top: 0;
+        grid-template-rows: auto auto;
+    }
+
+    /* About Me sets the row height (no scrollbar, text always fully visible) */
+    .card.about-me {
+        min-height: 0;
+    }
+
+    .about-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Timeline doesn't push the row taller; it fills it and scrolls inside */
+    .card.timeline {
+        min-height: 0;
+        contain: size;
+    }
+
+    .timeline-content {
+        min-height: 0;
+        max-height: none !important;
+    }
+
+    .site-footer {
+        flex: 0 0 auto;
+        padding-block: 10px 16px;
+    }
 }

@@ -9,20 +9,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
+    <script>
+        // Apply the saved light/dark choice before the page is drawn (no flash).
+        // First visit: follow the device's setting.
+        (function () {
+            let theme = null;
+            try { theme = localStorage.getItem("theme"); } catch (e) { }
+            if (theme !== "dark" && theme !== "light") {
+                theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
     <link rel="stylesheet" href="styles.css">
     <meta name="view-transition" content="same-origin" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600;900&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"><span class="cursor-label">Read</span></div>
 
-    <div id="loader">
+    <!-- Intro screen hidden. To show it again, remove style="display: none;" -->
+    <div id="loader" style="display: none;">
         <canvas id="loader-canvas"></canvas>
         <p class="click-prompt">HI I'M DESPOINA TOUSKA</p>
     </div>
@@ -33,7 +45,7 @@
             <div class="nav-secondary">Machine Learning Scientist</div>
         </div>
 
-        <div class="nav-col nav-status">
+        <div class="nav-col hide-on-mobile nav-status">
             <div class="nav-primary">Status</div>
             <div class="nav-secondary">Open to work</div>
         </div>
@@ -49,13 +61,22 @@
                     rel="noopener noreferrer">
                     IN
                 </a>
-                <a href="mailto:d3py.tousk@gmail.com">@</a>
+                <a href="mailto:d3py.tousk@gmail.com" id="copy-email" data-email="d3py.tousk@gmail.com"
+                    aria-label="Copy email address">email</a>
             </div>
         </div>
 
+        <!-- Location & time (replaced by the dark mode button). To bring back, uncomment:
         <div class="nav-col hide-on-mobile nav-location">
             <div class="nav-primary">Amsterdam, NL</div>
             <div class="nav-secondary" id="header-time"></div>
+        </div> -->
+
+        <div class="nav-col nav-theme">
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">
+                <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+                <span class="theme-toggle-text">Dark mode</span>
+            </button>
         </div>
     </header>
 
@@ -427,6 +448,8 @@
                 clearInterval(blogInterval);
                 startBlogSlider();
             }
+
+            if (window.fitBlogNotes) window.fitBlogNotes();
         }
 
         function nextBlogSlide() {
@@ -459,47 +482,54 @@
     </script>
 
     <script>
+        const cursorDot = document.getElementById("cursor-dot");
+        const loader = document.getElementById("loader");
+
         document.addEventListener("mouseenter", () => {
             cursorDot.style.opacity = "1";
-            cursorOutline.style.opacity = "0.3";
         });
 
         document.addEventListener("mouseleave", () => {
             cursorDot.style.opacity = "0";
-            cursorOutline.style.opacity = "0";
         });
 
-        const cursorDot = document.getElementById("cursor-dot");
-        const cursorOutline = document.getElementById("cursor-outline");
-        const loader = document.getElementById("loader");
-
-        // When the mouse enters the loader, turn the cursor white
+        // When the mouse enters the (hidden) intro screen, turn the cursor white
         loader.addEventListener("mouseenter", () => {
-            cursorDot.style.backgroundColor = "white";
-            cursorOutline.style.backgroundColor = "white";
+            cursorDot.style.background = "white";
         });
 
-        // When the mouse leaves the loader (or when the loader fades out), reset to text color
         loader.addEventListener("mouseleave", () => {
-            cursorDot.style.backgroundColor = "var(--text)";
-            cursorOutline.style.backgroundColor = "var(--text)";
+            cursorDot.style.background = "";
         });
+
+        // Elements that make the cursor grow (links, buttons, dots, arrows)
+        const CURSOR_ACTIVE = "a, button, .pub-dot, .blog-dot, .blog-nav, .pub-link-btn, .resume-slide-btn";
+
+        function updateCursorState(target) {
+            const el = target instanceof Element ? target : null;
+            const onInteractive = el && el.closest(CURSOR_ACTIVE);
+            // Over the blog block (but not over its own links/arrows): show "Read"
+            const onBlog = el && !onInteractive && el.closest(".blog-panel");
+            // Over real buttons the cursor hides and the button turns magenta instead
+            const onButton = el && el.closest(".blog-nav, .pub-link-btn, .pub-dot, .blog-dot, .resume-slide-btn, .nav-secondary.links a, .theme-toggle");
+            cursorDot.classList.toggle("is-label", !!onBlog);
+            cursorDot.classList.toggle("is-active", !!onInteractive && !onButton);
+            cursorDot.classList.toggle("is-hidden", !!onButton);
+        }
 
         window.addEventListener("mousemove", function (e) {
-            const posX = e.clientX;
-            const posY = e.clientY;
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            updateCursorState(e.target);
+        });
 
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
+        document.addEventListener("mouseover", (e) => updateCursorState(e.target));
 
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, {
-                duration: 20,
-                fill: "forwards",
-                easing: "ease-out"
-            });
+        // Clicking anywhere on the blog block opens the post shown in it
+        document.querySelector(".blog-panel")?.addEventListener("click", (e) => {
+            if (e.target.closest(CURSOR_ACTIVE)) return; // let links/arrows work normally
+            const link = document.querySelector(".blog-slide.active .blog-read-link");
+            if (link) window.location.href = link.href;
         });
 
         let currentPub = 1;
@@ -519,6 +549,8 @@
             document.querySelectorAll('.pub-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === index - 1);
             });
+
+            if (window.fitFeatureText) window.fitFeatureText();
         }
     </script>
     <script type="module" src="./src/main.js"></script>
@@ -543,6 +575,241 @@
 
         updateHeaderTime();
         setInterval(updateHeaderTime, 1000);
+    </script>
+    <script>
+        // Desktop only: the bottom cards have a fixed height. While they grow/shrink,
+        // the blog notes and publication authors show only the whole lines that fit,
+        // so text appears gradually and never pushes labels or buttons out of view.
+        (function () {
+            const desktop = window.matchMedia("(min-width: 981px) and (min-height: 600px)");
+            const blogPanel = document.querySelector(".blog-panel");
+            const pubPanel = document.querySelector(".publications-panel");
+            if (!blogPanel || !pubPanel) return;
+
+            const FLEX_TEXT = ".blog-panel .blog-notes, .publications-panel .pub-authors";
+
+            // Fixed space an element takes (flexible auto top margins are not counted)
+            function outerHeight(el) {
+                return el.offsetHeight + parseFloat(getComputedStyle(el).marginBottom);
+            }
+
+            // Clamp `text` to the whole lines that fit in `space` px next to its siblings
+            function clampToFit(parent, text, space) {
+                if (!text || getComputedStyle(text).display === "none") return;
+                let used = 0;
+                for (const child of parent.children) {
+                    if (child !== text) used += outerHeight(child);
+                }
+                const cs = getComputedStyle(text);
+                const lineHeight = parseFloat(cs.lineHeight);
+                const available = space - used - parseFloat(cs.marginBottom);
+                const lines = Math.max(0, Math.floor(available / lineHeight));
+
+                text.style.webkitLineClamp = String(Math.max(1, lines));
+                text.style.maxHeight = lines * lineHeight + "px";
+                if (lines === 0) text.style.marginBottom = "0px";
+            }
+
+            function fitFeatureText() {
+                document.querySelectorAll(FLEX_TEXT).forEach((el) => {
+                    el.style.webkitLineClamp = "";
+                    el.style.maxHeight = "";
+                    el.style.marginBottom = "";
+                });
+                if (!desktop.matches) return;
+
+                const blogContent = blogPanel.querySelector(".blog-slide.active .blog-slide-content");
+                if (blogContent) {
+                    clampToFit(blogContent, blogContent.querySelector(".blog-notes"), blogContent.clientHeight);
+                }
+
+                const pubArea = pubPanel.querySelector(".pub-display-area");
+                const pub = pubPanel.querySelector(".pub-content.active");
+                if (pubArea && pub) {
+                    clampToFit(pub, pub.querySelector(".pub-authors"), pubArea.clientHeight);
+                }
+            }
+
+            window.fitFeatureText = fitFeatureText;
+            window.fitBlogNotes = fitFeatureText; // used by the blog slider
+
+            const observer = new ResizeObserver(fitFeatureText);
+            observer.observe(blogPanel);
+            observer.observe(pubPanel);
+
+            [blogPanel, pubPanel].forEach((panel) => {
+                ["mouseenter", "mouseleave"].forEach((type) => {
+                    panel.addEventListener(type, () => {
+                        fitFeatureText();
+                        requestAnimationFrame(fitFeatureText);
+                    });
+                });
+            });
+            desktop.addEventListener("change", fitFeatureText);
+            if (document.fonts) document.fonts.ready.then(fitFeatureText);
+            window.addEventListener("load", fitFeatureText);
+        })();
+    </script>
+    <script>
+        // Dark mode button: switches the theme and remembers the choice
+        (function () {
+            const button = document.getElementById("theme-toggle");
+            if (!button) return;
+            const root = document.documentElement;
+            const icon = button.querySelector(".theme-toggle-icon");
+            const text = button.querySelector(".theme-toggle-text");
+
+            function render() {
+                const dark = root.dataset.theme === "dark";
+                // The button offers the *other* mode
+                icon.textContent = dark ? "☀" : "☾";
+                text.textContent = dark ? "Light mode" : "Dark mode";
+                button.setAttribute("aria-pressed", String(dark));
+                button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+            }
+
+            button.addEventListener("click", () => {
+                const next = root.dataset.theme === "dark" ? "light" : "dark";
+                root.dataset.theme = next;
+                try { localStorage.setItem("theme", next); } catch (e) { }
+                render();
+            });
+
+            render();
+        })();
+    </script>
+    <script>
+        // Clicking "@" copies the email address instead of opening a mail app
+        (function () {
+            const link = document.getElementById("copy-email");
+            if (!link) return;
+
+            const email = link.dataset.email;
+            const original = link.textContent; // "email"
+            const HOVER_TEXT = "Copy email";
+            const DONE_TEXT = "Copied!";
+            const HOVER_DELAY = 300;  // ms before "Copy email" appears
+            const DONE_TIME = 2500;   // ms "Copied!" stays visible
+            let resetTimer;
+            let hoverTimer;
+            let hovering = false;
+            let showingResult = false;
+
+            // Text to show when no "Copied!" message is active
+            function restingText() {
+                return hovering ? HOVER_TEXT : original;
+            }
+
+            // Below this width there is no room for "Copy email" next to the name
+            const roomForHoverText = window.matchMedia("(min-width: 480px)");
+
+            // Mouse only (on touch screens a tap would leave "Copy email" stuck)
+            link.addEventListener("pointerenter", (e) => {
+                if (e.pointerType !== "mouse" || !roomForHoverText.matches) return;
+                hovering = true;
+                clearTimeout(hoverTimer);
+                hoverTimer = setTimeout(() => {
+                    if (hovering && !showingResult) link.textContent = restingText();
+                }, HOVER_DELAY);
+            });
+
+            link.addEventListener("pointerleave", (e) => {
+                if (e.pointerType !== "mouse") return;
+                hovering = false;
+                clearTimeout(hoverTimer);
+                if (!showingResult) link.textContent = restingText();
+            });
+
+            function fallbackCopy(text) {
+                const field = document.createElement("textarea");
+                field.value = text;
+                field.setAttribute("readonly", "");
+                field.style.position = "fixed";
+                field.style.opacity = "0";
+                document.body.appendChild(field);
+                field.select();
+                field.setSelectionRange(0, text.length); // iOS
+                let ok = false;
+                try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+                document.body.removeChild(field);
+                return ok;
+            }
+
+            function showFeedback(message) {
+                showingResult = true;
+                clearTimeout(resetTimer);
+                clearTimeout(hoverTimer);
+                const links = link.parentElement;
+
+                if (roomForHoverText.matches) {
+                    link.textContent = message;
+                } else {
+                    // Narrow screens (phones): show the message on top of the links
+                    // instead of widening them, so the header doesn't jump
+                    links.dataset.message = message;
+                }
+
+                resetTimer = setTimeout(() => {
+                    showingResult = false;
+                    delete links.dataset.message;
+                    link.textContent = restingText();
+                }, DONE_TIME);
+            }
+
+            link.addEventListener("click", async (e) => {
+                e.preventDefault();
+                let copied = false;
+                if (navigator.clipboard && window.isSecureContext) {
+                    try {
+                        await navigator.clipboard.writeText(email);
+                        copied = true;
+                    } catch (err) { copied = false; }
+                }
+                if (!copied) copied = fallbackCopy(email);
+                showFeedback(copied ? DONE_TEXT : email);
+            });
+        })();
+    </script>
+    <script>
+        // Desktop only: zoom the card grid to fill the space between header and footer
+        (function () {
+            const desktop = window.matchMedia("(min-width: 981px) and (min-height: 600px)");
+            const MAX_ZOOM = 1.09;
+            const MIN_ZOOM = 0.8;
+            const SPACING = 36; // px of breathing room above and below the cards
+
+            function fitGrid() {
+                const root = document.documentElement;
+                const nav = document.querySelector(".sleek-nav");
+                const grid = document.querySelector(".grid");
+                const footer = document.querySelector(".site-footer");
+
+                if (!desktop.matches || !nav || !grid || !footer) {
+                    root.style.removeProperty("--fit-zoom");
+                    return;
+                }
+
+                const available = footer.getBoundingClientRect().top
+                    - nav.getBoundingClientRect().bottom - 2 * SPACING;
+
+                // Zoom changes the layout width (text wraps differently), so refine a few times
+                let zoom = 1;
+                root.style.setProperty("--fit-zoom", zoom);
+                for (let i = 0; i < 4; i++) {
+                    const height = grid.getBoundingClientRect().height;
+                    const next = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom * available / height));
+                    if (Math.abs(next - zoom) < 0.005) break;
+                    zoom = next;
+                    root.style.setProperty("--fit-zoom", zoom.toFixed(3));
+                }
+            }
+
+            window.addEventListener("resize", fitGrid);
+            desktop.addEventListener("change", fitGrid);
+            if (document.fonts) document.fonts.ready.then(fitGrid);
+            window.addEventListener("load", fitGrid);
+            fitGrid();
+        })();
     </script>
 </body>
 
