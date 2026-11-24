@@ -42,7 +42,7 @@
     <header class="sleek-nav" aria-label="Main Navigation">
         <div class="nav-col nav-identity">
             <div class="nav-primary">Despoina Touska</div>
-            <div class="nav-secondary">Machine Learning Scientist</div>
+            <div class="nav-secondary">AI Scientist</div>
         </div>
 
         <div class="nav-col hide-on-mobile nav-status">
@@ -152,6 +152,22 @@
                         <div class="timeline-item">
                             <div class="timeline-marker"></div>
                             <div class="timeline-info">
+                                <div class="item-title">AI Research Assistant at TH Köln</div>
+                                <div class="item-subtitle">2026 - Germany - Full time</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-info">
+                                <div class="item-title">AI Scientist at BPC</div>
+                                <div class="item-subtitle">2026 - Netherlands - Part time</div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-info">
                                 <div class="item-title">Teaching Assistant at UvA</div>
                                 <div class="item-subtitle">2025 - Netherlands - Part time</div>
                             </div>
@@ -212,18 +228,15 @@
                 </div>
                 <div class="about-content">
                     <p>
-                        I am a Machine Learning Researcher and Engineer with a strong background in computer
-                        engineering and deep learning. I hold an MSc in
-                        Artificial Intelligence, awarded cum laude, from the University of Amsterdam, and an
-                        MEng in Electrical and Computer Engineering from Aristotle University of Thessaloniki.
+                        I am an AI Scientist with a background in computer engineering and deep learning. I hold an MSc
+                        in Artificial Intelligence (cum laude) from the University of Amsterdam and an MEng in
+                        Electrical and Computer Engineering from the Aristotle University of Thessaloniki.
                     </p>
                     <p>
-                        My work focuses on computer vision, representation learning, generative AI, and efficient
-                        machine learning methods. Beyond conventional AI, I am interested in physics-inspired and
-                        neuroscience-inspired AI,
-                        particularly
-                        in how principles from the natural sciences can inform learning systems and how AI
-                        can drive scientific discovery.
+                        I build machine learning systems for computer vision, with a focus on representation learning,
+                        generative models and efficiency. I'm particularly interested in the two-way link between AI and
+                        science: how insights from physics and neuroscience can inspire new models, and how those models
+                        can advance scientific discovery.
                     </p>
                 </div>
             </article>
@@ -511,19 +524,36 @@
             // Over the blog block (but not over its own links/arrows): show "Read"
             const onBlog = el && !onInteractive && el.closest(".blog-panel");
             // Over real buttons the cursor hides and the button turns magenta instead
-            const onButton = el && el.closest(".blog-nav, .pub-link-btn, .pub-dot, .blog-dot, .resume-slide-btn, .nav-secondary.links a, .theme-toggle");
+            const onButton = el && el.closest(".blog-nav, .pub-link-btn, .pub-dot, .blog-dot, .resume-slide-btn, .nav-secondary.links a, .theme-toggle, .site-footer a");
             cursorDot.classList.toggle("is-label", !!onBlog);
             cursorDot.classList.toggle("is-active", !!onInteractive && !onButton);
             cursorDot.classList.toggle("is-hidden", !!onButton);
         }
 
-        window.addEventListener("mousemove", function (e) {
-            cursorDot.style.left = `${e.clientX}px`;
-            cursorDot.style.top = `${e.clientY}px`;
+        // Move the cursor smoothly: at most once per screen refresh, using a GPU
+        // transform (no page re-layout), and only re-check its state when the
+        // element under the mouse changes.
+        let cursorX = -100, cursorY = -100, cursorFrame = 0, lastTarget = null;
+
+        function drawCursor() {
+            cursorFrame = 0;
+            cursorDot.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+        }
+
+        window.addEventListener("mousemove", (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+            if (!cursorFrame) cursorFrame = requestAnimationFrame(drawCursor);
+            if (e.target !== lastTarget) {
+                lastTarget = e.target;
+                updateCursorState(e.target);
+            }
+        }, { passive: true });
+
+        document.addEventListener("mouseover", (e) => {
+            lastTarget = e.target;
             updateCursorState(e.target);
         });
-
-        document.addEventListener("mouseover", (e) => updateCursorState(e.target));
 
         // Clicking anywhere on the blog block opens the post shown in it
         document.querySelector(".blog-panel")?.addEventListener("click", (e) => {
@@ -553,7 +583,11 @@
             if (window.fitFeatureText) window.fitFeatureText();
         }
     </script>
-    <script type="module" src="./src/main.js"></script>
+    <!-- Intro screen animation (Three.js + GSAP). Disabled while the intro screen is
+         hidden: it downloaded two large libraries and redrew a full-screen WebGL
+         animation every frame, which slowed down the cursor. Re-enable together
+         with the intro screen (#loader) at the top of the page:
+    <script type="module" src="./src/main.js"></script> -->
     <script>
         function updateHeaderTime() {
             const timeElement = document.getElementById("header-time");
@@ -581,7 +615,7 @@
         // the blog notes and publication authors show only the whole lines that fit,
         // so text appears gradually and never pushes labels or buttons out of view.
         (function () {
-            const desktop = window.matchMedia("(min-width: 981px) and (min-height: 600px)");
+            const desktop = window.matchMedia("(min-width: 701px) and (min-height: 450px)");
             const blogPanel = document.querySelector(".blog-panel");
             const pubPanel = document.querySelector(".publications-panel");
             if (!blogPanel || !pubPanel) return;
@@ -773,10 +807,15 @@
     <script>
         // Desktop only: zoom the card grid to fill the space between header and footer
         (function () {
-            const desktop = window.matchMedia("(min-width: 981px) and (min-height: 600px)");
+            const desktop = window.matchMedia("(min-width: 701px) and (min-height: 450px)");
             const MAX_ZOOM = 1.09;
-            const MIN_ZOOM = 0.8;
-            const SPACING = 36; // px of breathing room above and below the cards
+            const MIN_ZOOM = 0.55; // small windows: the blocks may shrink this far to keep the grid
+            const MAX_SPACING = 36; // px of breathing room above and below the cards
+            // The 4 blocks stop growing on windows taller than this (a laptop screen).
+            // On bigger monitors they keep the laptop size, so they look "zoomed out".
+            // To match your laptop exactly: open the site on it, press F12, type
+            // innerHeight in the Console and put that number here.
+            const LAPTOP_HEIGHT = 800;
 
             function fitGrid() {
                 const root = document.documentElement;
@@ -786,18 +825,40 @@
 
                 if (!desktop.matches || !nav || !grid || !footer) {
                     root.style.removeProperty("--fit-zoom");
+                    root.style.removeProperty("--screen-boost");
                     return;
                 }
 
-                const available = footer.getBoundingClientRect().top
-                    - nav.getBoundingClientRect().bottom - 2 * SPACING;
+                // Screens larger than 1920x1080: scale everything up proportionally so the
+                // page keeps the same look (instead of small cards with big empty gaps)
+                const boost = Math.max(1, Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+                root.style.setProperty("--screen-boost", boost.toFixed(3));
+
+                // Page-wide "zoom out" factor from styles.css (--page-scale).
+                // (The boost above only enlarges the header and footer, not the 4 blocks.)
+                const scale = parseFloat(getComputedStyle(root).getPropertyValue("--page-scale")) || 1;
+
+                // Bigger than a laptop screen: size the blocks as if the window were laptop height
+                const bigScreenShrink = Math.min(1, LAPTOP_HEIGHT / window.innerHeight);
+
+                // Small windows: cut the surrounding space first, so the 4-block grid keeps
+                // as much size as possible. "tightness" goes 0 -> 1 as the height drops
+                // from 720px (laptop: unchanged) to 450px.
+                const tightness = Math.min(1, Math.max(0, (720 - window.innerHeight) / 270));
+                const spacing = MAX_SPACING - (MAX_SPACING - 6) * tightness;   // 36px -> 6px
+                const fillShare = scale + (1 - scale) * tightness;              // e.g. 85% -> 100%
+
+                // Cards fill this share of the free space (smaller scale = more room around them)
+                const available = (footer.getBoundingClientRect().top
+                    - nav.getBoundingClientRect().bottom - 2 * spacing) * fillShare * bigScreenShrink;
 
                 // Zoom changes the layout width (text wraps differently), so refine a few times
-                let zoom = 1;
+                let zoom = scale;
                 root.style.setProperty("--fit-zoom", zoom);
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 8; i++) {
                     const height = grid.getBoundingClientRect().height;
-                    const next = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoom * available / height));
+                    const next = Math.max(MIN_ZOOM * scale * bigScreenShrink,
+                        Math.min(MAX_ZOOM * scale, zoom * available / height));
                     if (Math.abs(next - zoom) < 0.005) break;
                     zoom = next;
                     root.style.setProperty("--fit-zoom", zoom.toFixed(3));

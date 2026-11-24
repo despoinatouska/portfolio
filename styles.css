@@ -60,8 +60,7 @@
     --chip-bg: #ececf1;
     --chip-text: #18181c;
     --on-accent: #0b0b0b;
-    --cursor-button-bg: rgba(218, 2, 125, 0.85);
-    /* "Read" pill stays bright on dark cards */
+    /* "Read" cursor pill uses the same see-through magenta as in light mode */
     color-scheme: dark;
 }
 
@@ -98,6 +97,29 @@ button {
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px;
+}
+
+/* ===== Page size: "zoom out" the whole page =====
+   1 = original size, 0.9 = 10% smaller, 0.8 = 20% smaller.
+   Scales header, cards, text and footer together (the cursor is not affected).
+   On desktop the fit-to-screen script (fitGrid in index.html) applies it too. */
+:root {
+    --page-scale: 0.85;
+}
+
+/* Phones keep the original size */
+@media (max-width: 700px) {
+    :root {
+        --page-scale: 1;
+    }
+}
+
+/* --screen-boost (set by fitGrid in index.html) grows everything together on
+   screens larger than 1920x1080, so big monitors look like a scaled-up 1080p */
+.sleek-nav,
+.container,
+.site-footer {
+    zoom: calc(var(--page-scale) * var(--screen-boost, 1));
 }
 
 /* ================= LOADER ================= */
@@ -141,7 +163,7 @@ canvas {
     align-items: flex-start;
     justify-content: space-between;
     font-family: "IBM Plex Mono", monospace;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.35;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -714,9 +736,37 @@ body,
 /* Wherever the blog block animates on hover (non-mobile widths), the cursor
    itself becomes the "Read" button and the whole block is clickable, so the
    separate Read button is hidden. */
-@media (min-width: 981px) {
+@media (min-width: 701px) {
     .blog-read-link {
         display: none;
+    }
+
+    /* Larger text in the Publications and Blog blocks on desktop,
+       so the content fills the blocks without big empty gaps */
+    .pub-title,
+    .blog-post-title {
+        font-size: clamp(21px, 1.6vw, 29px);
+    }
+
+    .pub-authors,
+    .blog-notes {
+        font-size: 19px;
+    }
+
+    .blog-date {
+        font-size: 13px;
+    }
+
+    .pub-conference {
+        font-size: 15px;
+    }
+
+    .pub-link-btn {
+        font-size: 13px;
+    }
+
+    .blog-label {
+        font-size: 12px;
     }
 }
 
@@ -918,7 +968,9 @@ body,
     border-radius: 25px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     color: #fff;
-    transform: translate(-50%, -50%);
+    /* position is set by the cursor script as a GPU transform (fast, no re-layout) */
+    transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+    will-change: transform;
     transition:
         width var(--cursor-speed) var(--cursor-ease),
         height var(--cursor-speed) var(--cursor-ease),
@@ -998,7 +1050,7 @@ button,
 
 /* ================= RESPONSIVE: TABLET ================= */
 
-@media (max-width: 980px) {
+@media (max-width: 700px) {
     .container {
         padding: 16px;
     }
@@ -1063,7 +1115,7 @@ button,
 /* ================= RESPONSIVE: MOBILE ================= */
 
 /* Applies to phones AND narrow desktop windows: anything below the desktop layout */
-@media (max-width: 980px) {
+@media (max-width: 700px) {
     .container {
         padding: 14px;
     }
@@ -1278,15 +1330,16 @@ button,
     text-underline-offset: 3px;
 }
 
+/* Footer name link: takes the cursor's magenta on hover; the cursor hides */
 .site-footer a:hover {
-    color: var(--text);
+    color: var(--cursor-color);
 }
 
 /* ================= DESKTOP: SINGLE SCREEN, NO SCROLL ================= */
 /* Header on top, cards centred vertically, footer pinned to the bottom.
    Card rows scale with the viewport height so everything fits. */
 
-@media (min-width: 981px) and (min-height: 600px) {
+@media (min-width: 701px) and (min-height: 450px) {
     :root {
         /* Top row sizes to the About Me text; the feature row has a fixed height.
            The whole block is then zoomed to fit the screen (see fitGrid in index.html). */
@@ -1355,7 +1408,8 @@ button,
         flex-direction: column;
         justify-content: center;
         padding-block: 0;
-        zoom: var(--fit-zoom, 1);
+        /* set by fitGrid, which already includes --page-scale */
+        zoom: var(--fit-zoom, var(--page-scale));
     }
 
     .grid {
